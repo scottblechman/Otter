@@ -3,17 +3,17 @@ package com.scottblechman.otter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import com.scottblechman.otter.dummy.DummyContent;
-import com.scottblechman.otter.dummy.DummyContent.DummyItem;
-
-import java.util.List;
+import com.scottblechman.otter.data.AlarmManager;
+import com.scottblechman.otter.data.AlarmManager.Alarm;
 
 /**
  * A fragment representing a list of Items.
@@ -69,7 +69,11 @@ public class AlarmFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(AlarmManager.ITEMS, mListener));
+
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                    ((LinearLayoutManager)recyclerView.getLayoutManager()).getOrientation());
+            recyclerView.addItemDecoration(dividerItemDecoration);
         }
         return view;
     }
@@ -104,6 +108,6 @@ public class AlarmFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Alarm item);
     }
 }

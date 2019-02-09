@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.scottblechman.otter.dummy.DummyContent;
+import com.scottblechman.otter.data.AlarmManager;
 
 public class MainActivity extends AppCompatActivity implements AlarmFragment.OnListFragmentInteractionListener {
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements AlarmFragment.OnL
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(AlarmManager.Alarm item) {
 
     }
 }
