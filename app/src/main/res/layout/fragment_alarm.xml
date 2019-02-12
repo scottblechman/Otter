@@ -17,15 +17,13 @@
             android:layout_marginTop="@dimen/text_margin"
             android:layout_marginStart="@dimen/text_margin"
             android:layout_marginEnd="4dp"
-            android:textAppearance="@style/Time"
-            android:text="10:00"/>
+            android:textAppearance="@style/Time" />
 
         <TextView
             android:id="@+id/timePeriod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/text_margin"
-            android:text="AM"
             android:textAppearance="@style/TimePeriod" />
     </LinearLayout>
 
@@ -35,15 +33,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/text_margin"
         android:layout_marginTop="@dimen/text_margin"
-        android:textAppearance="@style/Label"
-        android:text="Finish app"/>
+        android:textAppearance="@style/Label" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="@style/Date"
-        android:text="Jan 20, 2019"/>
+        android:textAppearance="@style/Date" />
 
 </LinearLayout>

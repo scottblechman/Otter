@@ -1,31 +1,37 @@
-package com.scottblechman.otter;
+package com.scottblechman.otter.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
+import com.scottblechman.otter.R;
 import com.scottblechman.otter.data.AlarmManager;
+import com.scottblechman.otter.interfaces.FormsInterface;
+import com.scottblechman.otter.ui.fragment.AlarmFragment;
+import com.scottblechman.otter.ui.fragment.TimePickerFragment;
 
-public class MainActivity extends AppCompatActivity implements AlarmFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity
+        implements AlarmFragment.OnListFragmentInteractionListener, FormsInterface {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                DialogFragment newFragment = new TimePickerFragment();
+                newFragment.show(getSupportFragmentManager(), "timePicker");
             }
         });
     }
@@ -54,6 +60,21 @@ public class MainActivity extends AppCompatActivity implements AlarmFragment.OnL
 
     @Override
     public void onListFragmentInteraction(AlarmManager.Alarm item) {
+
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hour, int minute) {
+
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+
+    }
+
+    @Override
+    public void onLabelCreated(String label) {
 
     }
 }

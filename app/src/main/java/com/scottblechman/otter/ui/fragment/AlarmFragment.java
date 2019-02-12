@@ -1,4 +1,4 @@
-package com.scottblechman.otter;
+package com.scottblechman.otter.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,10 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
+import com.scottblechman.otter.R;
 import com.scottblechman.otter.data.AlarmManager;
 import com.scottblechman.otter.data.AlarmManager.Alarm;
+import com.scottblechman.otter.ui.fragment.adapter.MyAlarmRecyclerViewAdapter;
 
 /**
  * A fragment representing a list of Items.

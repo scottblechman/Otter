@@ -1,6 +1,5 @@
-package com.scottblechman.otter;
+package com.scottblechman.otter.ui.fragment.adapter;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.scottblechman.otter.AlarmFragment.OnListFragmentInteractionListener;
+import com.scottblechman.otter.R;
+import com.scottblechman.otter.ui.fragment.AlarmFragment.OnListFragmentInteractionListener;
 import com.scottblechman.otter.data.AlarmManager.Alarm;
 
 import java.util.List;

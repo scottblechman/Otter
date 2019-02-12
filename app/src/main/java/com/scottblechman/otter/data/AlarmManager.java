@@ -23,7 +23,7 @@ public class AlarmManager {
 
     static {
         // Add some sample items.
-        for (int i = 0; i < COUNT; i++) {
+        for (int i = 0; i < 1; i++) {
             addItem(createAlarm(i));
         }
     }
