@@ -81,6 +81,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLabelCreated(String label) {
-        // TODO: 2/23/19 add object to database
+
     }
 }
