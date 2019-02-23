@@ -1,5 +1,6 @@
 package com.scottblechman.otter.ui.activity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,8 @@ import com.scottblechman.otter.R;
 import com.scottblechman.otter.data.AlarmManager;
 import com.scottblechman.otter.interfaces.FormsInterface;
 import com.scottblechman.otter.ui.fragment.AlarmFragment;
+import com.scottblechman.otter.ui.fragment.DatePickerFragment;
+import com.scottblechman.otter.ui.fragment.LabelFragment;
 import com.scottblechman.otter.ui.fragment.TimePickerFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -30,8 +33,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment newFragment = new TimePickerFragment();
-                newFragment.show(getSupportFragmentManager(), "timePicker");
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
     }
@@ -65,16 +68,19 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTimeSet(TimePicker view, int hour, int minute) {
-
+        DialogFragment newFragment = new LabelFragment();
+        newFragment.show(getSupportFragmentManager(), "label");
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-
+        // Open time picker after date set
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     @Override
     public void onLabelCreated(String label) {
-
+        // TODO: 2/23/19 add object to database
     }
 }

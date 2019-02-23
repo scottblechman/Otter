@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Otter</string>
     <string name="action_settings">Settings</string>
+    <string name="label_dialog_prompt">Enter label for alarm:</string>
+    <string name="dialogOk">OK</string>
+    <string name="dialogCancel">Cancel</string>
 </resources>
