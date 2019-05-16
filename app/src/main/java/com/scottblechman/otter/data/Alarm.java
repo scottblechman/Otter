@@ -11,7 +11,6 @@ import java.util.Date;
 public class Alarm {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     @ColumnInfo(name = "id")
     private int mUid;
 
