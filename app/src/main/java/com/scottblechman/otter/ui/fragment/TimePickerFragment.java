@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
+import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.interfaces.FormsInterface;
 
 import java.util.Calendar;
@@ -17,10 +18,13 @@ public class TimePickerFragment extends DialogFragment
 
     private FormsInterface mCallback;
 
+    private Alarm mAlarm;
+
     @Override
     public void onActivityCreated(@Nullable Bundle outState) {
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
+        mAlarm = getArguments().getParcelable("alarm");
 
     }
 
@@ -37,6 +41,8 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        mCallback.onTimeSet(view, hourOfDay, minute);
+        mAlarm.getDate().setHours(hourOfDay);
+        mAlarm.getDate().setMinutes(minute);
+        mCallback.onTimeSet(mAlarm);
     }
 }

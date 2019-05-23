@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.scottblechman.otter.R;
+import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.interfaces.FormsInterface;
 
 import java.util.Objects;
@@ -21,10 +22,13 @@ public class LabelFragment extends DialogFragment {
 
     private FormsInterface mCallback;
 
+    private Alarm mAlarm;
+
     @Override
     public void onActivityCreated(@Nullable Bundle outState) {
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
+        mAlarm = getArguments().getParcelable("alarm");
 
     }
 
@@ -47,7 +51,8 @@ public class LabelFragment extends DialogFragment {
                 .setPositiveButton(R.string.dialogOk,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
-                                mCallback.onLabelCreated(userInput.getText().toString());
+                                mAlarm.setLabel(userInput.getText().toString());
+                                mCallback.onLabelCreated(mAlarm);
                             }
                         })
                 .setNegativeButton(R.string.dialogCancel,

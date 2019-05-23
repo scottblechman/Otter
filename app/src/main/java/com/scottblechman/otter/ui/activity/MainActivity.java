@@ -72,21 +72,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTimeSet(TimePicker view, int hour, int minute) {
+    public void onTimeSet(Alarm alarm) {
+        Log.d(MainActivity.class.toString(), "onTimeSet: "+alarm.getDate().toString());
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("alarm", alarm);
+
         DialogFragment newFragment = new LabelFragment();
+        newFragment.setArguments(bundle);
         newFragment.show(getSupportFragmentManager(), "label");
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int day, Alarm alarm) {
+    public void onDateSet(Alarm alarm) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("alarm", alarm);
+
         // Open time picker after date set
         Log.d(MainActivity.class.toString(), "onDateSet: "+alarm.getDate().toString());
         DialogFragment newFragment = new TimePickerFragment();
+        newFragment.setArguments(bundle);
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     @Override
-    public void onLabelCreated(String label) {
-        Log.d("MainActivity", "onLabelCreated: "+label);
+    public void onLabelCreated(Alarm alarm) {
+        Log.d("MainActivity", "onLabelCreated: "+alarm.getLabel());
     }
 }

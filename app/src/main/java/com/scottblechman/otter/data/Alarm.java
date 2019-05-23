@@ -81,4 +81,7 @@ public class Alarm implements Parcelable {
         }
     };
 
+    public void setLabel(String toString) {
+        mLabel = toString;
+    }
 }

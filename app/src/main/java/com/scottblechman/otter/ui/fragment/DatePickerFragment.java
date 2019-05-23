@@ -45,6 +45,6 @@ public class DatePickerFragment extends DialogFragment
         mAlarm.getDate().setYear(year);
         mAlarm.getDate().setMonth(month);
         mAlarm.getDate().setDate(day);
-        mCallback.onDateSet(view, year, month, day, mAlarm);
+        mCallback.onDateSet(mAlarm);
     }
 }
