@@ -5,8 +5,12 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.interfaces.FormsInterface;
 
 import java.util.Calendar;
@@ -16,11 +20,13 @@ public class DatePickerFragment extends DialogFragment
 
     private FormsInterface mCallback;
 
+    private Alarm mAlarm;
+
     @Override
     public void onActivityCreated(@Nullable Bundle outState) {
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
-
+        mAlarm = getArguments().getParcelable("alarm");
     }
 
     @Override
@@ -36,6 +42,9 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        mCallback.onDateSet(view, year, month, day);
+        mAlarm.getDate().setYear(year);
+        mAlarm.getDate().setMonth(month);
+        mAlarm.getDate().setDate(day);
+        mCallback.onDateSet(view, year, month, day, mAlarm);
     }
 }

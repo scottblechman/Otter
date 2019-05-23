@@ -1,9 +1,7 @@
 package com.scottblechman.otter.ui.activity;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,12 +12,14 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.scottblechman.otter.R;
-import com.scottblechman.otter.data.AlarmManager;
+import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.interfaces.FormsInterface;
 import com.scottblechman.otter.ui.fragment.AlarmFragment;
 import com.scottblechman.otter.ui.fragment.DatePickerFragment;
 import com.scottblechman.otter.ui.fragment.LabelFragment;
 import com.scottblechman.otter.ui.fragment.TimePickerFragment;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements AlarmFragment.OnListFragmentInteractionListener, FormsInterface {
@@ -33,7 +33,12 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Alarm alarm = new Alarm();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("alarm", alarm);
+
                 DialogFragment newFragment = new DatePickerFragment();
+                newFragment.setArguments(bundle);
                 newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
@@ -62,8 +67,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(AlarmManager.Alarm item) {
-
+    public void onListFragmentInteraction(Alarm item) {
+        Log.d("MainActivity", "onListFragmentInteraction: "+item.getLabel());
     }
 
     @Override
@@ -73,14 +78,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int day) {
+    public void onDateSet(DatePicker view, int year, int month, int day, Alarm alarm) {
         // Open time picker after date set
+        Log.d(MainActivity.class.toString(), "onDateSet: "+alarm.getDate().toString());
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     @Override
     public void onLabelCreated(String label) {
-
+        Log.d("MainActivity", "onLabelCreated: "+label);
     }
 }

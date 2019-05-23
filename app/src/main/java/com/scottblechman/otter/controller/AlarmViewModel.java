@@ -20,7 +20,7 @@ public class AlarmViewModel extends AndroidViewModel {
         mAllAlarms = mRepository.getAllAlarms();
     }
 
-    LiveData<List<Alarm>> getAllWords() { return mAllAlarms; }
+    public LiveData<List<Alarm>> getAllWords() { return mAllAlarms; }
 
     public void insert(Alarm alarm) { mRepository.insert(alarm); }
 

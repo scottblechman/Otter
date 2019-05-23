@@ -1,7 +1,10 @@
 package com.scottblechman.otter.ui.fragment;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.scottblechman.otter.R;
-import com.scottblechman.otter.data.AlarmManager;
-import com.scottblechman.otter.data.AlarmManager.Alarm;
+import com.scottblechman.otter.controller.AlarmViewModel;
+import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.ui.fragment.adapter.MyAlarmRecyclerViewAdapter;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -29,6 +34,8 @@ public class AlarmFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+
+    private AlarmViewModel mWordViewModel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,6 +61,8 @@ public class AlarmFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        mWordViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
     }
 
     @Override
@@ -64,13 +73,21 @@ public class AlarmFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            final RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(AlarmManager.ITEMS, mListener));
+            recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(mListener));
+
+            mWordViewModel.getAllWords().observe(this, new Observer<List<Alarm>>() {
+                @Override
+                public void onChanged(@Nullable final List<Alarm> alarms) {
+                    // Update the cached copy of the words in the adapter.
+                    ((MyAlarmRecyclerViewAdapter)recyclerView.getAdapter()).setAlarms(alarms);
+                }
+            });
 
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                     ((LinearLayoutManager)recyclerView.getLayoutManager()).getOrientation());

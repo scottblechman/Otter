@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.scottblechman.otter.R;
+import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.ui.fragment.AlarmFragment.OnListFragmentInteractionListener;
-import com.scottblechman.otter.data.AlarmManager.Alarm;
 
 import java.util.List;
 
@@ -20,11 +20,10 @@ import java.util.List;
  */
 public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Alarm> mValues;
+    private List<Alarm> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyAlarmRecyclerViewAdapter(List<Alarm> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyAlarmRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
         mListener = listener;
     }
 
@@ -39,9 +38,9 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Log.d("AlarmRecyclerViewAdapte", "onBindViewHolder: "+mValues.get(position).toString());
-        holder.mDateView.setText(mValues.get(position).getDateAsString());
-        holder.mTimeView.setText(mValues.get(position).getTimeAsString());
-        holder.mLabelView.setText(mValues.get(position).label);
+        holder.mDateView.setText(mValues.get(position).getDate().toString());
+        holder.mTimeView.setText(mValues.get(position).getDate().toString());
+        holder.mLabelView.setText(mValues.get(position).getLabel());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,9 +54,17 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
         });
     }
 
+    public void setAlarms(List<Alarm> alarms){
+        mValues = alarms;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if(mValues != null) {
+            return mValues.size();
+        }
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
