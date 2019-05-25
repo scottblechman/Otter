@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import java.util.Date;
 import java.util.Objects;
 
+@SuppressWarnings("WeakerAccess")
 @Entity(tableName = "alarms")
 public class Alarm implements Parcelable {
 

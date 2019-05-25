@@ -4,7 +4,8 @@ import android.arch.persistence.room.TypeConverter;
 
 import java.util.Date;
 
-public class DateConverters {
+@SuppressWarnings("WeakerAccess")
+class DateConverters {
     @TypeConverter
     public static Date fromTimestamp(Long value) {
         return value == null ? null : new Date(value);

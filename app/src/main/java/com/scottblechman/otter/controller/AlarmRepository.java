@@ -10,6 +10,7 @@ import com.scottblechman.otter.data.AlarmDatabase;
 
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class AlarmRepository {
 
     private AlarmDao mAlarmDao;

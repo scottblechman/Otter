@@ -3,6 +3,7 @@ package com.scottblechman.otter.ui.fragment;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
@@ -12,6 +13,7 @@ import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.interfaces.FormsInterface;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
@@ -24,10 +26,11 @@ public class TimePickerFragment extends DialogFragment
     public void onActivityCreated(@Nullable Bundle outState) {
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
-        mAlarm = getArguments().getParcelable("alarm");
+        mAlarm = Objects.requireNonNull(getArguments()).getParcelable("alarm");
 
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
@@ -40,6 +43,7 @@ public class TimePickerFragment extends DialogFragment
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    @SuppressWarnings("deprecation")
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         mAlarm.getDate().setHours(hourOfDay);
         mAlarm.getDate().setMinutes(minute);

@@ -1,5 +1,6 @@
 package com.scottblechman.otter.ui.fragment.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,15 +28,16 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_alarm, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Log.d("AlarmRecyclerViewAdapte", "onBindViewHolder: "+mValues.get(position).toString());
         holder.mDateView.setText(mValues.get(position).getDate().toString());
@@ -68,13 +70,13 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mDateView;
-        public final TextView mTimeView;
-        public final TextView mLabelView;
-        public Alarm mItem;
+        final View mView;
+        final TextView mDateView;
+        final TextView mTimeView;
+        final TextView mLabelView;
+        Alarm mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mDateView = view.findViewById(R.id.date);
@@ -82,6 +84,7 @@ public class MyAlarmRecyclerViewAdapter extends RecyclerView.Adapter<MyAlarmRecy
             mLabelView = view.findViewById(R.id.label);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mTimeView.getText() + "'";

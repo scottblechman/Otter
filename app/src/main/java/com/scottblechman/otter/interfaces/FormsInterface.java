@@ -1,8 +1,5 @@
 package com.scottblechman.otter.interfaces;
 
-import android.widget.DatePicker;
-import android.widget.TimePicker;
-
 import com.scottblechman.otter.data.Alarm;
 
 /**

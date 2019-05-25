@@ -9,6 +9,7 @@ import com.scottblechman.otter.data.Alarm;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class AlarmViewModel extends AndroidViewModel {
 
     private AlarmRepository mRepository;

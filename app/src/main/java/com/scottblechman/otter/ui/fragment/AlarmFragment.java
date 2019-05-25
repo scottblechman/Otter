@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +21,7 @@ import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.ui.fragment.adapter.MyAlarmRecyclerViewAdapter;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.
@@ -35,7 +37,7 @@ public class AlarmFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    private AlarmViewModel mWordViewModel;
+    private AlarmViewModel mAlarmViewModel;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -62,11 +64,11 @@ public class AlarmFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        mWordViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
+        mAlarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alarm_list, container, false);
 
@@ -81,16 +83,18 @@ public class AlarmFragment extends Fragment {
             }
             recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(mListener));
 
-            mWordViewModel.getAllWords().observe(this, new Observer<List<Alarm>>() {
+            mAlarmViewModel.getAllWords().observe(this, new Observer<List<Alarm>>() {
                 @Override
                 public void onChanged(@Nullable final List<Alarm> alarms) {
                     // Update the cached copy of the words in the adapter.
-                    ((MyAlarmRecyclerViewAdapter)recyclerView.getAdapter()).setAlarms(alarms);
+                    ((MyAlarmRecyclerViewAdapter) Objects.requireNonNull(recyclerView.getAdapter()))
+                            .setAlarms(alarms);
                 }
             });
 
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                    ((LinearLayoutManager)recyclerView.getLayoutManager()).getOrientation());
+                    ((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager()))
+                            .getOrientation());
             recyclerView.addItemDecoration(dividerItemDecoration);
         }
         return view;

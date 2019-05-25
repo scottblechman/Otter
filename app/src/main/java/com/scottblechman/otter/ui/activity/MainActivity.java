@@ -1,5 +1,6 @@
 package com.scottblechman.otter.ui.activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -8,10 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
-
 import com.scottblechman.otter.R;
+import com.scottblechman.otter.controller.AlarmViewModel;
 import com.scottblechman.otter.data.Alarm;
 import com.scottblechman.otter.interfaces.FormsInterface;
 import com.scottblechman.otter.ui.fragment.AlarmFragment;
@@ -19,15 +18,17 @@ import com.scottblechman.otter.ui.fragment.DatePickerFragment;
 import com.scottblechman.otter.ui.fragment.LabelFragment;
 import com.scottblechman.otter.ui.fragment.TimePickerFragment;
 
-import java.util.Date;
-
 public class MainActivity extends AppCompatActivity
         implements AlarmFragment.OnListFragmentInteractionListener, FormsInterface {
+
+    private AlarmViewModel mAlarmViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAlarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -97,5 +98,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLabelCreated(Alarm alarm) {
         Log.d("MainActivity", "onLabelCreated: "+alarm.getLabel());
+        mAlarmViewModel.insert(alarm);
     }
 }
