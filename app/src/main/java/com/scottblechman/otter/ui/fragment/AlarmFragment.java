@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.controller.AlarmViewModel;
 import com.scottblechman.otter.data.Alarm;
-import com.scottblechman.otter.ui.fragment.adapter.MyAlarmRecyclerViewAdapter;
+import com.scottblechman.otter.ui.fragment.adapter.AlarmRecyclerViewAdapter;
 
 import java.util.List;
 import java.util.Objects;
@@ -81,13 +81,13 @@ public class AlarmFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyAlarmRecyclerViewAdapter(mListener));
+            recyclerView.setAdapter(new AlarmRecyclerViewAdapter(mListener, this));
 
             mAlarmViewModel.getAllWords().observe(this, new Observer<List<Alarm>>() {
                 @Override
                 public void onChanged(@Nullable final List<Alarm> alarms) {
                     // Update the cached copy of the words in the adapter.
-                    ((MyAlarmRecyclerViewAdapter) Objects.requireNonNull(recyclerView.getAdapter()))
+                    ((AlarmRecyclerViewAdapter) Objects.requireNonNull(recyclerView.getAdapter()))
                             .setAlarms(alarms);
                 }
             });
