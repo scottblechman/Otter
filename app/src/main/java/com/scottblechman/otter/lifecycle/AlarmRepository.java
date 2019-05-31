@@ -1,12 +1,12 @@
-package com.scottblechman.otter.controller;
+package com.scottblechman.otter.lifecycle;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
-import com.scottblechman.otter.data.Alarm;
-import com.scottblechman.otter.data.AlarmDao;
-import com.scottblechman.otter.data.AlarmDatabase;
+import com.scottblechman.otter.db.Alarm;
+import com.scottblechman.otter.db.AlarmDao;
+import com.scottblechman.otter.db.AlarmDatabase;
 
 import java.util.List;
 

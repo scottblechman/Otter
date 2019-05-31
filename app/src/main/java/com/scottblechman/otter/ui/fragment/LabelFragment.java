@@ -1,5 +1,6 @@
 package com.scottblechman.otter.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -12,8 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.scottblechman.otter.R;
-import com.scottblechman.otter.data.Alarm;
-import com.scottblechman.otter.interfaces.FormsInterface;
+import com.scottblechman.otter.db.Alarm;
+import com.scottblechman.otter.ui.interfaces.FormsInterface;
 
 import java.util.Objects;
 
@@ -28,12 +29,13 @@ public class LabelFragment extends DialogFragment {
     public void onActivityCreated(@Nullable Bundle outState) {
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
-        mAlarm = getArguments().getParcelable("alarm");
+        mAlarm = Objects.requireNonNull(getArguments()).getParcelable("alarm");
 
     }
 
     @NonNull
     @Override
+    @SuppressLint("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater li = LayoutInflater.from(getContext());
         View promptsView = li.inflate(R.layout.label_dialog, null);

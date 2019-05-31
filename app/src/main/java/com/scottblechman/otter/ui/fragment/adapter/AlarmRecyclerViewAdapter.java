@@ -1,8 +1,8 @@
 package com.scottblechman.otter.ui.fragment.adapter;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.scottblechman.otter.R;
-import com.scottblechman.otter.controller.AlarmViewModel;
-import com.scottblechman.otter.data.Alarm;
+import com.scottblechman.otter.lifecycle.AlarmViewModel;
+import com.scottblechman.otter.db.Alarm;
+import com.scottblechman.otter.ui.activity.AlarmActivity;
 import com.scottblechman.otter.ui.fragment.AlarmFragment;
 import com.scottblechman.otter.ui.fragment.AlarmFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Alarm} and makes a call to the
@@ -85,6 +87,7 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
         final TextView mTimeView;
         final TextView mLabelView;
         final Button mDeleteButton;
+        final Button mAlarmButton;
         Alarm mItem;
 
         ViewHolder(View view) {
@@ -94,6 +97,7 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
             mTimeView = view.findViewById(R.id.time);
             mLabelView = view.findViewById(R.id.label);
             mDeleteButton = view.findViewById(R.id.buttonDelete);
+            mAlarmButton = view.findViewById(R.id.buttonAlarm);
 
             mDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,6 +105,14 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
                     mAlarmViewModel.delete(mItem);
                     Toast.makeText(v.getContext(),"Delete item " + mItem.getLabel(),
                             Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            mAlarmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mFragment.getContext(), AlarmActivity.class);
+                    Objects.requireNonNull(mFragment.getActivity()).startActivity(intent);
                 }
             });
         }

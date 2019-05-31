@@ -1,6 +1,6 @@
-package com.scottblechman.otter.interfaces;
+package com.scottblechman.otter.ui.interfaces;
 
-import com.scottblechman.otter.data.Alarm;
+import com.scottblechman.otter.db.Alarm;
 
 /**
  * A communications interface to pass form data to the main Activity in order

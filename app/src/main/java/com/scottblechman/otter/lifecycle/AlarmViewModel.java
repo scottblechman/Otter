@@ -1,11 +1,11 @@
-package com.scottblechman.otter.controller;
+package com.scottblechman.otter.lifecycle;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.scottblechman.otter.data.Alarm;
+import com.scottblechman.otter.db.Alarm;
 
 import java.util.List;
 

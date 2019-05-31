@@ -16,8 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.scottblechman.otter.R;
-import com.scottblechman.otter.controller.AlarmViewModel;
-import com.scottblechman.otter.data.Alarm;
+import com.scottblechman.otter.lifecycle.AlarmViewModel;
+import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.ui.fragment.adapter.AlarmRecyclerViewAdapter;
 
 import java.util.List;

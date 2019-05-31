@@ -9,8 +9,8 @@ import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
-import com.scottblechman.otter.data.Alarm;
-import com.scottblechman.otter.interfaces.FormsInterface;
+import com.scottblechman.otter.db.Alarm;
+import com.scottblechman.otter.ui.interfaces.FormsInterface;
 
 import java.util.Calendar;
 import java.util.Objects;

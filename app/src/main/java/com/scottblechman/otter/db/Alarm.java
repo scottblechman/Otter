@@ -1,4 +1,4 @@
-package com.scottblechman.otter.data;
+package com.scottblechman.otter.db;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
