@@ -13,17 +13,23 @@ import java.util.List;
 public class AlarmViewModel extends AndroidViewModel {
 
     private AlarmRepository mRepository;
+    private BroadcastRepository mBroadcastRepository;
+
     private LiveData<List<Alarm>>  mAllAlarms;
 
     public AlarmViewModel(@NonNull Application application) {
         super(application);
         mRepository = new AlarmRepository(application);
+        mBroadcastRepository = new BroadcastRepository(application);
         mAllAlarms = mRepository.getAllAlarms();
     }
 
     public LiveData<List<Alarm>> getAllWords() { return mAllAlarms; }
 
-    public void insert(Alarm alarm) { mRepository.insert(alarm); }
+    public void insert(Alarm alarm) {
+        mRepository.insert(alarm);
+        mBroadcastRepository.insert(alarm);
+    }
 
     public void update(Alarm alarm) { mRepository.update(alarm); }
 
