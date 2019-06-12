@@ -36,4 +36,21 @@ class BroadcastRepository {
         AlarmManager am = (AlarmManager) mApplication.getSystemService(ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
     }
+
+    void delete(Alarm alarm) {
+        // get a Calendar object with current time
+        Calendar cal = Calendar.getInstance();
+        // set date and time to alarm values
+        Date date = alarm.getDate();
+
+        cal.set(date.getYear(), date.getMonth(), date.getDate(),
+                date.getHours(), date.getMinutes(), 0);
+        Intent intent = new Intent(mApplication, AlarmBroadcastReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(mApplication, 192837, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Get the AlarmManager service
+        AlarmManager am = (AlarmManager) mApplication.getSystemService(ALARM_SERVICE);
+        am.cancel(sender);
+    }
 }
