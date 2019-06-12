@@ -31,7 +31,10 @@ public class AlarmViewModel extends AndroidViewModel {
         mBroadcastRepository.insert(alarm);
     }
 
-    public void update(Alarm alarm) { mRepository.update(alarm); }
+    public void update(Alarm oldAlarm, Alarm newAlarm) {
+        mRepository.update(newAlarm);
+        mBroadcastRepository.update(oldAlarm, newAlarm);
+    }
 
     public void delete(Alarm alarm) {
         mRepository.delete(alarm);

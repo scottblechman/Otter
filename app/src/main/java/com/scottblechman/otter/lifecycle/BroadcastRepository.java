@@ -12,6 +12,7 @@ import java.util.Date;
 
 import static android.content.Context.ALARM_SERVICE;
 
+@SuppressWarnings("deprecation")
 class BroadcastRepository {
 
     private Application mApplication;
@@ -52,5 +53,10 @@ class BroadcastRepository {
         // Get the AlarmManager service
         AlarmManager am = (AlarmManager) mApplication.getSystemService(ALARM_SERVICE);
         am.cancel(sender);
+    }
+
+    void update(Alarm oldAlarm, Alarm newAlarm) {
+        delete(oldAlarm);
+        insert(newAlarm);
     }
 }
