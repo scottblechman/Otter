@@ -20,22 +20,23 @@
 
     <style name="Date">
         <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textSize">48sp</item>
-        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Label">
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Time">
         <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textSize">36sp</item>
+        <item name="android:textSize">56sp</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
     </style>
 
     <style name="TimePeriod">
         <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 </resources>

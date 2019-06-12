@@ -19,7 +19,9 @@ import com.scottblechman.otter.ui.activity.AlarmActivity;
 import com.scottblechman.otter.ui.fragment.AlarmFragment;
 import com.scottblechman.otter.ui.fragment.AlarmFragment.OnListFragmentInteractionListener;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -51,9 +53,19 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        Log.d("AlarmRecyclerViewAdapte", "onBindViewHolder: "+mValues.get(position).toString());
-        holder.mDateView.setText(mValues.get(position).getDate().toString());
-        holder.mTimeView.setText(mValues.get(position).getDate().toString());
+
+        String timeFormat = "hh:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(timeFormat, Locale.US);
+        holder.mTimeView.setText(sdf.format(mValues.get(position).getDate()));
+
+        String timePeriodFormat = "a";
+        sdf = new SimpleDateFormat(timePeriodFormat, Locale.US);
+        holder.mTimePeriodView.setText(sdf.format(mValues.get(position).getDate()));
+
+        String dateFormat = "MM/dd/yyyy";
+        sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        holder.mDateView.setText(sdf.format(mValues.get(position).getDate()));
+
         holder.mLabelView.setText(mValues.get(position).getLabel());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +97,9 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
         final View mView;
         final TextView mDateView;
         final TextView mTimeView;
+        final TextView mTimePeriodView;
         final TextView mLabelView;
         final Button mDeleteButton;
-        final Button mAlarmButton;
         Alarm mItem;
 
         ViewHolder(View view) {
@@ -95,9 +107,9 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
             mView = view;
             mDateView = view.findViewById(R.id.date);
             mTimeView = view.findViewById(R.id.time);
+            mTimePeriodView = view.findViewById(R.id.timePeriod);
             mLabelView = view.findViewById(R.id.label);
             mDeleteButton = view.findViewById(R.id.buttonDelete);
-            mAlarmButton = view.findViewById(R.id.buttonAlarm);
 
             mDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,14 +117,6 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
                     mAlarmViewModel.delete(mItem);
                     Toast.makeText(v.getContext(),"Delete item " + mItem.getLabel(),
                             Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            mAlarmButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mFragment.getContext(), AlarmActivity.class);
-                    Objects.requireNonNull(mFragment.getActivity()).startActivity(intent);
                 }
             });
         }
