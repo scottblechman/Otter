@@ -23,6 +23,7 @@ public class AlarmActivity extends AppCompatActivity {
         ringtone.play();
 
         TextView textView = findViewById(R.id.labelText);
+        textView.setText(getIntent().getStringExtra("label"));
 
         Button mCancelButton = findViewById(R.id.buttonCancel);
         mCancelButton.setOnClickListener(new View.OnClickListener() {

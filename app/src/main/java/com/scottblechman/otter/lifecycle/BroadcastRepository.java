@@ -32,7 +32,8 @@ class BroadcastRepository {
                 date.getHours(), date.getMinutes(), 0);
         Log.d("BroadcastRepository", "insert: "+cal.getTime());
         Intent intent = new Intent(mApplication, AlarmBroadcastReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(mApplication, alarm.hashCode(), intent,
+        intent.putExtra("label", alarm.getLabel());
+        PendingIntent sender = PendingIntent.getBroadcast(mApplication, alarm.getUid(), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get the AlarmManager service
