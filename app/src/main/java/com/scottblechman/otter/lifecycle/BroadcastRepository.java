@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.util.Log;
 
 import com.scottblechman.otter.db.Alarm;
 
@@ -29,8 +30,9 @@ class BroadcastRepository {
 
         cal.set(date.getYear(), date.getMonth(), date.getDate(),
                 date.getHours(), date.getMinutes(), 0);
+        Log.d("BroadcastRepository", "insert: "+cal.getTime());
         Intent intent = new Intent(mApplication, AlarmBroadcastReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(mApplication, 192837, intent,
+        PendingIntent sender = PendingIntent.getBroadcast(mApplication, alarm.hashCode(), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get the AlarmManager service
@@ -47,7 +49,7 @@ class BroadcastRepository {
         cal.set(date.getYear(), date.getMonth(), date.getDate(),
                 date.getHours(), date.getMinutes(), 0);
         Intent intent = new Intent(mApplication, AlarmBroadcastReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(mApplication, 192837, intent,
+        PendingIntent sender = PendingIntent.getBroadcast(mApplication, alarm.hashCode(), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get the AlarmManager service
@@ -57,6 +59,8 @@ class BroadcastRepository {
 
     void update(Alarm oldAlarm, Alarm newAlarm) {
         delete(oldAlarm);
-        insert(newAlarm);
+        if(newAlarm.getEnabled()) {
+            insert(newAlarm);
+        }
     }
 }

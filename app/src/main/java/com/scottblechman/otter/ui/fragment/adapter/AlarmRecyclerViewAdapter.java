@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +102,7 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
         final TextView mTimePeriodView;
         final TextView mLabelView;
         final Button mDeleteButton;
+        final Switch mToggleSwitch;
         Alarm mItem;
 
         ViewHolder(View view) {
@@ -110,6 +113,7 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
             mTimePeriodView = view.findViewById(R.id.timePeriod);
             mLabelView = view.findViewById(R.id.label);
             mDeleteButton = view.findViewById(R.id.buttonDelete);
+            mToggleSwitch = view.findViewById(R.id.toggle);
 
             mDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,6 +121,14 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
                     mAlarmViewModel.delete(mItem);
                     Toast.makeText(v.getContext(),"Delete item " + mItem.getLabel(),
                             Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            mToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Alarm oldAlarm = mItem;
+                    mItem.setEnabled(isChecked);
+                    mAlarmViewModel.update(oldAlarm, mItem);
                 }
             });
         }

@@ -26,15 +26,21 @@ public class Alarm implements Parcelable {
     @ColumnInfo(name = "label")
     private String mLabel;
 
+    @ColumnInfo(name = "enabled")
+    private boolean mEnabled;
+
     // Default constructor, used when new Alarm object created
     @Ignore
     public Alarm() {
         mDate = new Date();
+        mLabel = "";
+        mEnabled = true;
     }
 
     public Alarm(@NonNull Date date, String label) {
         this.mDate = date;
         this.mLabel = label;
+        this.mEnabled = true;
     }
 
     public Date getDate() {
@@ -47,7 +53,15 @@ public class Alarm implements Parcelable {
 
     public int getUid() { return mUid; }
 
+    public boolean getEnabled() { return mEnabled; }
+
     public void setUid(int id) { mUid = id; }
+
+    public void setLabel(String toString) {
+        mLabel = toString;
+    }
+
+    public void setEnabled(boolean enabled) { mEnabled = enabled; }
 
     // All methods below allow for conversion to a Parcelable object
     protected Alarm(Parcel in) {
@@ -55,6 +69,7 @@ public class Alarm implements Parcelable {
         long tmpMDate = in.readLong();
         mDate = Objects.requireNonNull(tmpMDate != -1 ? new Date(tmpMDate) : null);
         mLabel = in.readString();
+        mEnabled = in.readByte() != 0;
     }
 
     @Override
@@ -67,6 +82,7 @@ public class Alarm implements Parcelable {
         dest.writeInt(mUid);
         dest.writeLong(mDate.getTime());
         dest.writeString(mLabel);
+        dest.writeByte((byte) (mEnabled ? 1 : 0));
     }
 
     @SuppressWarnings("unused")
@@ -81,8 +97,4 @@ public class Alarm implements Parcelable {
             return new Alarm[size];
         }
     };
-
-    public void setLabel(String toString) {
-        mLabel = toString;
-    }
 }
