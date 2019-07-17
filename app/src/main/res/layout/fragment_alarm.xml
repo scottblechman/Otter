@@ -27,24 +27,26 @@
         app:layout_constraintStart_toEndOf="@+id/time" />
 
     <TextView
-        android:id="@+id/label"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textAppearance="@style/Label"
+        android:textAppearance="@style/Date"
         app:layout_constraintStart_toStartOf="@+id/time"
-        app:layout_constraintTop_toBottomOf="@+id/time" />
+        app:layout_constraintTop_toBottomOf="@+id/time"
+        android:text="date"/>
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:layout_marginTop="8dp"
-        android:textAppearance="@style/Date"
-        app:layout_constraintLeft_toRightOf="@id/label"
-        app:layout_constraintTop_toBottomOf="@+id/timePeriod" />
+        android:textAppearance="@style/Label"
+        app:layout_constraintLeft_toRightOf="@id/date"
+        app:layout_constraintTop_toBottomOf="@+id/timePeriod"
+        android:text="label"/>
 
 
     <Button
