@@ -33,6 +33,7 @@ class BroadcastRepository {
         Log.d("BroadcastRepository", "insert: "+cal.getTime());
         Intent intent = new Intent(mApplication, AlarmBroadcastReceiver.class);
         intent.putExtra("label", alarm.getLabel());
+        intent.putExtra("time", alarm.getDate().getTime());
         PendingIntent sender = PendingIntent.getBroadcast(mApplication, alarm.getUid(), intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

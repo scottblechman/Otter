@@ -3,11 +3,12 @@ package com.scottblechman.otter.lifecycle;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Toast;
 
-import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.ui.activity.AlarmActivity;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
@@ -17,9 +18,12 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 
         String label = intent.getStringExtra("label");
+        long time = intent.getLongExtra("time", new Date().getTime());
+
         Intent intent2 = new Intent(context, AlarmActivity.class);
         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent2.putExtra("label", label);
+        intent2.putExtra("time", time);
         context.startActivity(intent2);
     }
 }

@@ -1,5 +1,6 @@
 package com.scottblechman.otter.ui.activity;
 
+import android.icu.util.Calendar;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.scottblechman.otter.R;
+
+import java.util.Date;
 
 public class AlarmActivity extends AppCompatActivity {
 
@@ -24,6 +27,10 @@ public class AlarmActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.labelText);
         textView.setText(getIntent().getStringExtra("label"));
+
+        TextView timeTv = findViewById(R.id.timeText);
+        Date date = new Date(getIntent().getLongExtra("time", new Date().getTime()));
+        timeTv.setText(date.toString());
 
         Button mCancelButton = findViewById(R.id.buttonCancel);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
