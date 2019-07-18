@@ -8,9 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.db.Alarm;
@@ -47,6 +50,24 @@ public class LabelFragment extends DialogFragment {
 
         final EditText userInput = promptsView
                 .findViewById(R.id.editTextDialogUserInput);
+
+        final TextView charactersRemaining = promptsView
+                .findViewById(R.id.labelCharacters);
+
+        userInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                charactersRemaining.setText(String.format("%s/%s", s.length(),
+                        getResources().getInteger(R.integer.max_length)));
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int st, int b, int c)
+            { }
+            @Override
+            public void beforeTextChanged(CharSequence s, int st, int c, int a)
+            { }
+        });
 
         alertDialogBuilder
                 .setCancelable(false)

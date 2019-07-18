@@ -19,10 +19,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:maxLength="@integer/max_length"
         tools:ignore="Autofill,LabelFor">
 
         <requestFocus />
 
     </EditText>
+
+    <TextView
+        android:id="@+id/labelCharacters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelDefaultCharacters"/>
 
 </LinearLayout>
