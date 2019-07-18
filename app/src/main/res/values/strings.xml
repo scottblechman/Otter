@@ -7,4 +7,5 @@
     <string name="delete">Delete</string>
     <string name="alarm">Play Alarm</string>
     <string name="end_alarm">End Alarm</string>
+    <string name="toastTimePickerError">Alarm can not be set earlier than now.</string>
 </resources>

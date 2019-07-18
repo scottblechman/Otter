@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import com.scottblechman.otter.ui.activity.AlarmActivity;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class AlarmBroadcastReceiver extends BroadcastReceiver {

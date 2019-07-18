@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
 import com.scottblechman.otter.db.Alarm;
@@ -17,6 +19,9 @@ import com.scottblechman.otter.ui.fragment.AlarmFragment;
 import com.scottblechman.otter.ui.fragment.DatePickerFragment;
 import com.scottblechman.otter.ui.fragment.LabelFragment;
 import com.scottblechman.otter.ui.fragment.TimePickerFragment;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements AlarmFragment.OnListFragmentInteractionListener, FormsInterface {
@@ -76,6 +81,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTimeSet(Alarm alarm) {
         Log.d(MainActivity.class.toString(), "onTimeSet: "+alarm.getDate().toString());
+
         Bundle bundle = new Bundle();
         bundle.putParcelable("alarm", alarm);
 
