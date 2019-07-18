@@ -128,7 +128,7 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     Alarm oldAlarm = mItem;
                     mItem.setEnabled(isChecked);
-                    mAlarmViewModel.update(oldAlarm, mItem);
+                    mAlarmViewModel.update(oldAlarm, mItem, true);
                 }
             });
         }

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item type="integer" name="max_length">24</item>
+    <!-- TODO: Placeholder value; put this in settings -->
+    <item type="integer" name="snooze_minutes">1</item>
 </resources>

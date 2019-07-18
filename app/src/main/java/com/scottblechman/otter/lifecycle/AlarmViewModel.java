@@ -31,8 +31,16 @@ public class AlarmViewModel extends AndroidViewModel {
         mBroadcastRepository.insert(alarm);
     }
 
-    public void update(Alarm oldAlarm, Alarm newAlarm) {
-        mRepository.update(newAlarm);
+    /**
+     * Modifies the database entry and broadcast receiver (if any) for an alarm.
+     * @param oldAlarm current version of alarm
+     * @param newAlarm copy of old alarm with values modified
+     * @param updateDb false if we want to create a new broadcast receiver (e.g. for snoozing)
+     */
+    public void update(Alarm oldAlarm, Alarm newAlarm, boolean updateDb) {
+        if(updateDb) {
+            mRepository.update(newAlarm);
+        }
         mBroadcastRepository.update(oldAlarm, newAlarm);
     }
 
