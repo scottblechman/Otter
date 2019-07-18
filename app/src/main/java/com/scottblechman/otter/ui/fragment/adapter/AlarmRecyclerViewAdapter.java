@@ -54,15 +54,15 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
 
         String timeFormat = "hh:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(timeFormat, Locale.US);
-        holder.mTimeView.setText(sdf.format(mValues.get(position).getDate()));
+        holder.mTimeView.setText(sdf.format(mValues.get(position).getDate().toDate()));
 
         String timePeriodFormat = "a";
         sdf = new SimpleDateFormat(timePeriodFormat, Locale.US);
-        holder.mTimePeriodView.setText(sdf.format(mValues.get(position).getDate()));
+        holder.mTimePeriodView.setText(sdf.format(mValues.get(position).getDate().toDate()));
 
         String dateFormat = "MM/dd/yyyy";
         sdf = new SimpleDateFormat(dateFormat, Locale.US);
-        holder.mDateView.setText(sdf.format(mValues.get(position).getDate()));
+        holder.mDateView.setText(sdf.format(mValues.get(position).getDate().toDate()));
 
         holder.mLabelView.setText(mValues.get(position).getLabel());
 
