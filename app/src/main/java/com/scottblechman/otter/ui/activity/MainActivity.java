@@ -20,9 +20,6 @@ import com.scottblechman.otter.ui.fragment.DatePickerFragment;
 import com.scottblechman.otter.ui.fragment.LabelFragment;
 import com.scottblechman.otter.ui.fragment.TimePickerFragment;
 
-import java.util.Calendar;
-import java.util.Date;
-
 public class MainActivity extends AppCompatActivity
         implements AlarmFragment.OnListFragmentInteractionListener, FormsInterface {
 
@@ -30,7 +27,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("MAINACTIVITY", "onCreate: start");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -80,7 +76,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTimeSet(Alarm alarm) {
-        Log.d(MainActivity.class.toString(), "onTimeSet: "+alarm.getDate().toString());
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("alarm", alarm);
@@ -95,8 +90,6 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putParcelable("alarm", alarm);
 
-        // Open time picker after date set
-        Log.d(MainActivity.class.toString(), "onDateSet: "+alarm.getDate().toString());
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.setArguments(bundle);
         newFragment.show(getSupportFragmentManager(), "timePicker");
@@ -104,7 +97,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLabelCreated(Alarm alarm) {
-        Log.d("MainActivity", "onLabelCreated: "+alarm.getLabel());
         mAlarmViewModel.insert(alarm);
     }
 }

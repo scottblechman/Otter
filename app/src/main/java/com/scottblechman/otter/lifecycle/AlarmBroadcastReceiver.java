@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.scottblechman.otter.ui.activity.AlarmActivity;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
@@ -17,7 +17,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 
         String label = intent.getStringExtra("label");
-        long time = intent.getLongExtra("time", new Date().getTime());
+        long time = intent.getLongExtra("time", new DateTime().getMillis());
 
         Intent intent2 = new Intent(context, AlarmActivity.class);
         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

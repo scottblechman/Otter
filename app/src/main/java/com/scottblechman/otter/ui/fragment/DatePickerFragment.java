@@ -11,6 +11,8 @@ import android.widget.DatePicker;
 import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.ui.interfaces.FormsInterface;
 
+import org.joda.time.DateTime;
+
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -32,27 +34,30 @@ public class DatePickerFragment extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        final DateTime today = new DateTime();
 
         // Create a new instance of DatePickerDialog and return it.
         // Set the earliest possible date to the current date.
         DatePickerDialog dialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
-                this, year, month, day);
+                this, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
 
         DatePicker datePicker = dialog.getDatePicker();
-        datePicker.setMinDate(c.getTimeInMillis());
+        datePicker.setMinDate(today.getMillis());
 
         return dialog;
     }
 
     @SuppressWarnings("deprecation")
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        mAlarm.getDate().setYear(year);
-        mAlarm.getDate().setMonth(month);
-        mAlarm.getDate().setDate(day);
+        DateTime selectedDate = new DateTime()
+                .withYear(year)
+                .withMonthOfYear(month)
+                .withDayOfMonth(day)
+                .withHourOfDay(0)
+                .withMinuteOfHour(0)
+                .withSecondOfMinute(0);
+
+        mAlarm.setDate(selectedDate);
         mCallback.onDateSet(mAlarm);
     }
 }

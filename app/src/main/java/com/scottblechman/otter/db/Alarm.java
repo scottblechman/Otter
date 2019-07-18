@@ -8,7 +8,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import java.util.Date;
+import org.joda.time.DateTime;
+
 import java.util.Objects;
 
 @SuppressWarnings("WeakerAccess")
@@ -21,7 +22,7 @@ public class Alarm implements Parcelable {
 
     @NonNull
     @ColumnInfo(name = "date")
-    private Date mDate;
+    private DateTime mDate;
 
     @ColumnInfo(name = "label")
     private String mLabel;
@@ -32,18 +33,18 @@ public class Alarm implements Parcelable {
     // Default constructor, used when new Alarm object created
     @Ignore
     public Alarm() {
-        mDate = new Date();
+        mDate = new DateTime();
         mLabel = "";
         mEnabled = true;
     }
 
-    public Alarm(@NonNull Date date, String label) {
+    public Alarm(@NonNull DateTime date, String label) {
         this.mDate = date;
         this.mLabel = label;
         this.mEnabled = true;
     }
 
-    public Date getDate() {
+    public DateTime getDate() {
         return mDate;
     }
 
@@ -63,11 +64,13 @@ public class Alarm implements Parcelable {
 
     public void setEnabled(boolean enabled) { mEnabled = enabled; }
 
+    public void setDate(DateTime dateTime) { mDate = dateTime; }
+
     // All methods below allow for conversion to a Parcelable object
     protected Alarm(Parcel in) {
         mUid = in.readInt();
         long tmpMDate = in.readLong();
-        mDate = Objects.requireNonNull(tmpMDate != -1 ? new Date(tmpMDate) : null);
+        mDate = Objects.requireNonNull(tmpMDate != -1 ? new DateTime(tmpMDate) : null);
         mLabel = in.readString();
         mEnabled = in.readByte() != 0;
     }
@@ -80,7 +83,7 @@ public class Alarm implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mUid);
-        dest.writeLong(mDate.getTime());
+        dest.writeLong(mDate.getMillis());
         dest.writeString(mLabel);
         dest.writeByte((byte) (mEnabled ? 1 : 0));
     }

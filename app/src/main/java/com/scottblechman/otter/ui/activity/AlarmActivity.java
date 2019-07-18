@@ -14,7 +14,7 @@ import com.scottblechman.otter.R;
 import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class AlarmActivity extends AppCompatActivity {
 
@@ -35,15 +35,16 @@ public class AlarmActivity extends AppCompatActivity {
         textView.setText(getIntent().getStringExtra("label"));
 
         TextView timeTv = findViewById(R.id.timeText);
-        final Date date = new Date(getIntent().getLongExtra("time", new Date().getTime()));
-        timeTv.setText(date.toString());
+        final DateTime dateTime = new DateTime(getIntent().getLongExtra("time",
+                new DateTime().getMillis()));
+        timeTv.setText(dateTime.toString());
 
         Button mSnoozeButton = findViewById(R.id.buttonSnooze);
         mSnoozeButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Alarm oldAlarm = new Alarm(date, getIntent().getStringExtra("label"));
+                Alarm oldAlarm = new Alarm(dateTime, getIntent().getStringExtra("label"));
                 Alarm newAlarm = createSnoozedAlarm(oldAlarm);
                 mAlarmViewModel.update(oldAlarm, newAlarm,false);
                 ringtone.stop();
@@ -67,8 +68,8 @@ public class AlarmActivity extends AppCompatActivity {
      * @return alarm with a new activation time
      */
     private Alarm createSnoozedAlarm(Alarm originalAlarm) {
-        long originalTime = originalAlarm.getDate().getTime();
-        long newTime = originalTime + (getResources().getInteger(R.integer.snooze_minutes) * 60000);
-        return new Alarm(new Date(newTime), originalAlarm.getLabel());
+        int minutes = getResources().getInteger(R.integer.snooze_minutes);
+        DateTime dateTime = originalAlarm.getDate().plusMinutes(minutes);
+        return new Alarm(dateTime, originalAlarm.getLabel());
     }
 }

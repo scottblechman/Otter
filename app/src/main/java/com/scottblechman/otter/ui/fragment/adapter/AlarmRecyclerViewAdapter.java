@@ -1,10 +1,8 @@
 package com.scottblechman.otter.ui.fragment.adapter;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +15,12 @@ import android.widget.Toast;
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
 import com.scottblechman.otter.db.Alarm;
-import com.scottblechman.otter.ui.activity.AlarmActivity;
 import com.scottblechman.otter.ui.fragment.AlarmFragment;
 import com.scottblechman.otter.ui.fragment.AlarmFragment.OnListFragmentInteractionListener;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Alarm} and makes a call to the
