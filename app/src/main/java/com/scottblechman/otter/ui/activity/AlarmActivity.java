@@ -15,6 +15,8 @@ import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class AlarmActivity extends AppCompatActivity {
 
@@ -31,13 +33,14 @@ public class AlarmActivity extends AppCompatActivity {
         final Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
         ringtone.play();
 
-        TextView textView = findViewById(R.id.labelText);
-        textView.setText(getIntent().getStringExtra("label"));
+        TextView labelTv = findViewById(R.id.labelText);
+        labelTv.setText(getIntent().getStringExtra("label"));
 
         TextView timeTv = findViewById(R.id.timeText);
         final DateTime dateTime = new DateTime(getIntent().getLongExtra("time",
                 new DateTime().getMillis()));
-        timeTv.setText(dateTime.toString());
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, MMMM d y, h:m a");
+        timeTv.setText(dateTime.toString(fmt));
 
         Button mSnoozeButton = findViewById(R.id.buttonSnooze);
         mSnoozeButton.setOnClickListener(new View.OnClickListener() {
