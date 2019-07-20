@@ -72,7 +72,7 @@ public class AlarmActivity extends AppCompatActivity {
      */
     private Alarm createSnoozedAlarm(Alarm originalAlarm) {
         int minutes = getResources().getInteger(R.integer.snooze_minutes);
-        DateTime dateTime = originalAlarm.getDate().plusMinutes(minutes);
+        DateTime dateTime = DateTime.now().plusMinutes(minutes);
         return new Alarm(dateTime, originalAlarm.getLabel());
     }
 }
