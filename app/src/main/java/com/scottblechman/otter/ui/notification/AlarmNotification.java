@@ -15,6 +15,10 @@ import android.support.v4.app.NotificationCompat;
 
 import com.scottblechman.otter.R;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 /**
  * Helper class for showing and canceling alarm
  * notifications.
@@ -23,69 +27,27 @@ import com.scottblechman.otter.R;
  * class to create notifications in a backward-compatible way.
  */
 public class AlarmNotification {
-    /**
-     * The unique identifier for this type of notification.
-     */
+
     private static final String NOTIFICATION_TAG = "Alarm";
 
-    /**
-     * Shows the notification, or updates a previously shown notification of
-     * this type, with the given parameters.
-     * <p>
-     * TODO: Customize this method's arguments to present relevant content in
-     * the notification.
-     * <p>
-     * TODO: Customize the contents of this method to tweak the behavior and
-     * presentation of alarm notifications. Make
-     * sure to follow the
-     * <a href="https://developer.android.com/design/patterns/notifications.html">
-     * Notification design guidelines</a> when doing so.
-     *
-     * @see #cancel(Context)
-     */
-    public static void notify(final Context context,
-                              final String exampleString, final int number) {
+    public static void notify(final Context context, String label) {
         final Resources res = context.getResources();
 
-        // This image is used as the notification's large icon (thumbnail).
-        // TODO: Remove this if your notification has no relevant thumbnail.
-        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.example_picture);
-
-
-        final String ticker = exampleString;
-        final String title = res.getString(
-                R.string.alarm_notification_title_template, exampleString);
-        final String text = res.getString(
-                R.string.alarm_notification_placeholder_text_template, exampleString);
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, MMMM d y, h:m a");
+        DateTime now = DateTime.now();
+        final String body = now.toString(fmt);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
                 .setDefaults(Notification.DEFAULT_ALL)
-
-                // Set required fields, including the small icon, the
-                // notification title, and text.
                 .setSmallIcon(R.drawable.ic_stat_alarm)
-                .setContentTitle(title)
-                .setContentText(text)
-
-                // All fields below this line are optional.
-
-                // Use a default priority (recognized on devices running Android
-                // 4.1 or later)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-                // Provide a large icon, shown with the notification in the
-                // notification drawer on devices running Android 3.0 or later.
-                .setLargeIcon(picture)
-
-                // Set ticker text (preview) information for this notification.
-                .setTicker(ticker)
-
-                // Show a number. This is useful when stacking notifications of
-                // a single type.
-                .setNumber(number)
+                .setContentTitle(label)
+                .setContentText(body)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setTicker(label)
+                .setNumber(1)
 
                 // If this notification relates to a past or upcoming event, you
                 // should set the relevant time information using the setWhen
@@ -108,9 +70,8 @@ public class AlarmNotification {
                 // Show expanded text content on devices running Android 4.1 or
                 // later.
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(text)
-                        .setBigContentTitle(title)
-                        .setSummaryText("Dummy summary text"))
+                        .bigText(body)
+                        .setBigContentTitle(label))
 
                 // Example additional actions for this notification. These will
                 // only show on devices running Android 4.1 or later, so you
@@ -142,25 +103,17 @@ public class AlarmNotification {
     private static void notify(final Context context, final Notification notification) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            nm.notify(NOTIFICATION_TAG, 0, notification);
-        } else {
-            nm.notify(NOTIFICATION_TAG.hashCode(), notification);
-        }
+        nm.notify(NOTIFICATION_TAG, 0, notification);
     }
 
     /**
      * Cancels any notifications of this type previously shown using
-     * {@link #notify(Context, String, int)}.
+     * {@link #notify(Context, String)}.
      */
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     public static void cancel(final Context context) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            nm.cancel(NOTIFICATION_TAG, 0);
-        } else {
-            nm.cancel(NOTIFICATION_TAG.hashCode());
-        }
+        nm.cancel(NOTIFICATION_TAG, 0);
     }
 }

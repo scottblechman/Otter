@@ -11,7 +11,7 @@
     <string name="toastTimePickerError">Alarm can not be set earlier than now.</string>
     <string name="labelDefaultCharacters">0/24</string>
 
-    <string name="alarm_notification_title_template">Alarm: %1$s</string>
+    <string name="notificationTitle">Alarm</string>
 
     <!-- TODO: remove this placeholder text -->
     <string name="alarm_notification_placeholder_text_template">You said %1$s and lorem ipsum dolor
