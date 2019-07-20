@@ -20,6 +20,10 @@ import com.scottblechman.otter.ui.fragment.DatePickerFragment;
 import com.scottblechman.otter.ui.fragment.LabelFragment;
 import com.scottblechman.otter.ui.fragment.TimePickerFragment;
 
+import org.joda.time.DateTime;
+
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity
         implements AlarmFragment.OnListFragmentInteractionListener, FormsInterface {
 
@@ -76,11 +80,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTimeSet(Alarm alarm) {
-
         Bundle bundle = new Bundle();
         bundle.putParcelable("alarm", alarm);
 
-        DialogFragment newFragment = new LabelFragment();
+        DialogFragment newFragment;
+        if(mAlarmViewModel.isAlarmValid(alarm, DateTime.now())) {
+            newFragment = new LabelFragment();
+        } else {
+            newFragment = new TimePickerFragment();
+        }
         newFragment.setArguments(bundle);
         newFragment.show(getSupportFragmentManager(), "label");
     }

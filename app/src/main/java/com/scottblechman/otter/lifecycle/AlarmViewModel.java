@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 
 import com.scottblechman.otter.db.Alarm;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -47,5 +49,16 @@ public class AlarmViewModel extends AndroidViewModel {
     public void delete(Alarm alarm) {
         mRepository.delete(alarm);
         mBroadcastRepository.delete(alarm);
+    }
+
+    /**
+     * Checks to see if an alarm has a valid date-time; i.e., that the alarm has not been set for a
+     * time in the past.
+     * @param alarm has date and time set
+     * @param now current time when alarm is being set
+     * @return whether the alarm has been set in the past
+     */
+    public boolean isAlarmValid(Alarm alarm, DateTime now) {
+        return alarm.getDate().isAfter(now.toInstant().getMillis());
     }
 }
