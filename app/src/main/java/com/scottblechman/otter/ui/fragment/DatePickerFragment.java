@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.widget.DatePicker;
 
 import com.scottblechman.otter.db.Alarm;
@@ -34,29 +35,25 @@ public class DatePickerFragment extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
-        final DateTime today = new DateTime();
+        final Calendar calendar = Calendar.getInstance();
 
         // Create a new instance of DatePickerDialog and return it.
         // Set the earliest possible date to the current date.
         DatePickerDialog dialog = new DatePickerDialog(Objects.requireNonNull(getActivity()),
-                this, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
+                this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DATE));
 
         DatePicker datePicker = dialog.getDatePicker();
-        datePicker.setMinDate(today.getMillis());
+        datePicker.setMinDate(calendar.getTimeInMillis());
 
         return dialog;
     }
 
-    @SuppressWarnings("deprecation")
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        DateTime selectedDate = new DateTime()
-                .withYear(year)
-                .withMonthOfYear(month)
-                .withDayOfMonth(day)
-                .withHourOfDay(0)
-                .withMinuteOfHour(0)
-                .withSecondOfMinute(0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, 0, 0, 0);
 
+        DateTime selectedDate = new DateTime(calendar.getTimeInMillis());
         mAlarm.setDate(selectedDate);
         mCallback.onDateSet(mAlarm);
     }
