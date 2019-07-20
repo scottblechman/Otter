@@ -2,9 +2,6 @@ package com.scottblechman.otter.ui.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,7 +34,7 @@ public class AlarmActivity extends AppCompatActivity {
         TextView timeTv = findViewById(R.id.timeText);
         final DateTime dateTime = new DateTime(getIntent().getLongExtra("time",
                 new DateTime().getMillis()));
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, MMMM d y, h:mm a");
+        DateTimeFormatter fmt = DateTimeFormat.forPattern(getString(R.string.dateTimeFormat));
         timeTv.setText(dateTime.toString(fmt));
 
         Button mSnoozeButton = findViewById(R.id.buttonSnooze);

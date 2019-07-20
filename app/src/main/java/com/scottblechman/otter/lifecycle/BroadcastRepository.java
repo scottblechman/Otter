@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 
 import static android.content.Context.ALARM_SERVICE;
 
-@SuppressWarnings("deprecation")
 class BroadcastRepository {
 
     private Application mApplication;

@@ -14,7 +14,6 @@ import com.scottblechman.otter.ui.interfaces.FormsInterface;
 
 import org.joda.time.DateTime;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 public class TimePickerFragment extends DialogFragment
@@ -43,7 +42,6 @@ public class TimePickerFragment extends DialogFragment
                 DateFormat.is24HourFormat(getActivity()));
     }
 
-    @SuppressWarnings("deprecation")
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         DateTime originalTime = mAlarm.getDate();
         DateTime selectedTime = new DateTime()

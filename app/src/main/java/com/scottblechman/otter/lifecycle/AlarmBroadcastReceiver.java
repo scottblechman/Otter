@@ -18,7 +18,6 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         String label = intent.getStringExtra("label");
         long time = intent.getLongExtra("time", new DateTime().getMillis());
 
-        // AlarmNotification.notify(context, intent);
         Intent serviceIntent = new Intent(context, NotificationService.class);
         serviceIntent.putExtra("label", label);
         serviceIntent.putExtra("time", time);

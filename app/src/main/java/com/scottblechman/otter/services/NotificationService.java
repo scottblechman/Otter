@@ -78,19 +78,20 @@ public class NotificationService extends Service {
 
 
         final String label = intent.getStringExtra("label");
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, MMMM d y, h:mm a");
+        DateTimeFormatter fmt = DateTimeFormat.forPattern(getString(R.string.dateTimeFormat));
         DateTime now = DateTime.now();
         final String time = now.toString(fmt);
 
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this,
+                NotificationCompat.CATEGORY_ALARM)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)  // TODO: replace with icon
                 .setTicker(label)
                 .setShowWhen(false)
                 .setChannelId(NotificationCompat.CATEGORY_ALARM)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setDefaults(NotificationCompat.DEFAULT_VIBRATE | NotificationCompat.DEFAULT_LIGHTS)
                 .setAutoCancel(false)
                 .setOngoing(true)
-                //.setContentTitle(getText(R.string.notificationId))
                 .setContentTitle(label)
                 .setContentText(time)
                 .setContentIntent(contentIntent);
