@@ -1,6 +1,5 @@
 package com.scottblechman.otter.services;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -12,13 +11,14 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.ui.activity.AlarmActivity;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class NotificationService extends Service {
 
@@ -72,23 +72,31 @@ public class NotificationService extends Service {
     private void createNotification() {
 
         // Open alarm activity when the notification is touched
-        // TODO: make createActivityIntent method with intent extras
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AlarmActivity.class), 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,
+                intent.getIntExtra("uid", 0),
+                createActivityIntent(this, intent), PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        Notification notification = new Notification.Builder(this)
+        final String label = intent.getStringExtra("label");
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, MMMM d y, h:mm a");
+        DateTime now = DateTime.now();
+        final String time = now.toString(fmt);
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)  // TODO: replace with icon
-                .setTicker("Ticker")  // TODO: alarm label
+                .setTicker(label)
                 .setShowWhen(false)
-                .setPriority(Notification.PRIORITY_HIGH)
+                .setChannelId(NotificationCompat.CATEGORY_ALARM)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setAutoCancel(false)
+                .setOngoing(true)
                 //.setContentTitle(getText(R.string.notificationId))
-                .setContentTitle("Content Title")   // TODO: alarm label
-                .setContentText("Context Text") // TODO: formatted datetime
-                .setContentIntent(contentIntent)
-                .build();
+                .setContentTitle(label)
+                .setContentText(time)
+                .setContentIntent(contentIntent);
+                //.build();
 
-        notificationManager.notify(R.string.notificationId, notification);
+        notificationManager.notify(R.string.notificationId, notification.build());
     }
 
     private Intent createActivityIntent(Context context, Intent intent) {

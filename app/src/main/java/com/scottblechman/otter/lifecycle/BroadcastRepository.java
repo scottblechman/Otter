@@ -25,6 +25,7 @@ class BroadcastRepository {
         DateTime dateTime = alarm.getDate().withSecondOfMinute(0);
 
         Intent intent = new Intent(mApplication, AlarmBroadcastReceiver.class);
+        intent.putExtra("uid", alarm.getUid());
         intent.putExtra("label", alarm.getLabel());
         intent.putExtra("time", alarm.getDate().getMillis());
         PendingIntent sender = PendingIntent.getBroadcast(mApplication, alarm.getUid(), intent,

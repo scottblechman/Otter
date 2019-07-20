@@ -31,15 +31,13 @@ public class AlarmActivity extends AppCompatActivity {
 
         mAlarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
 
-
-
         TextView labelTv = findViewById(R.id.labelText);
         labelTv.setText(getIntent().getStringExtra("label"));
 
         TextView timeTv = findViewById(R.id.timeText);
         final DateTime dateTime = new DateTime(getIntent().getLongExtra("time",
                 new DateTime().getMillis()));
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, MMMM d y, h:m a");
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, MMMM d y, h:mm a");
         timeTv.setText(dateTime.toString(fmt));
 
         Button mSnoozeButton = findViewById(R.id.buttonSnooze);
