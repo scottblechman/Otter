@@ -14,6 +14,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 import com.scottblechman.otter.R;
+import com.scottblechman.otter.ui.activity.AlarmActivity;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -30,7 +31,7 @@ public class AlarmNotification {
 
     private static final String NOTIFICATION_TAG = "Alarm";
 
-    public static void notify(final Context context, String label) {
+    public static void notify(final Context context, Intent intent) {
         final Resources res = context.getResources();
 
         DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, MMMM d y, h:m a");
@@ -39,24 +40,14 @@ public class AlarmNotification {
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
-                // Set appropriate defaults for the notification light, sound,
-                // and vibration.
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.ic_stat_alarm)
-                .setContentTitle(label)
+                .setContentTitle(intent.getStringExtra("label"))
                 .setContentText(body)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setTicker(label)
+                .setTicker(intent.getStringExtra("label"))
                 .setNumber(1)
-
-                // If this notification relates to a past or upcoming event, you
-                // should set the relevant time information using the setWhen
-                // method below. If this call is omitted, the notification's
-                // timestamp will by set to the time at which it was shown.
-                // TODO: Call setWhen if this notification relates to a past or
-                // upcoming event. The sole argument to this method should be
-                // the notification timestamp in milliseconds.
-                //.setWhen(...)
+                .setShowWhen(false)
 
                 // Set the pending intent to be initiated when the user touches
                 // the notification.
@@ -64,14 +55,14 @@ public class AlarmNotification {
                         PendingIntent.getActivity(
                                 context,
                                 0,
-                                new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")),
+                                createActivityIntent(context, intent),
                                 PendingIntent.FLAG_UPDATE_CURRENT))
 
                 // Show expanded text content on devices running Android 4.1 or
                 // later.
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(body)
-                        .setBigContentTitle(label))
+                        .setBigContentTitle(intent.getStringExtra("label")))
 
                 // Example additional actions for this notification. These will
                 // only show on devices running Android 4.1 or later, so you
@@ -108,12 +99,24 @@ public class AlarmNotification {
 
     /**
      * Cancels any notifications of this type previously shown using
-     * {@link #notify(Context, String)}.
+     * {@link #notify(Context, Intent)}.
      */
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     public static void cancel(final Context context) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NOTIFICATION_TAG, 0);
+    }
+
+    private static Intent createActivityIntent(Context context, Intent intent) {
+        String label = intent.getStringExtra("label");
+        long time = intent.getLongExtra("time", new DateTime().getMillis());
+
+        Intent activityIntent = new Intent(context, AlarmActivity.class);
+        activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activityIntent.putExtra("label", label);
+        activityIntent.putExtra("time", time);
+
+        return activityIntent;
     }
 }

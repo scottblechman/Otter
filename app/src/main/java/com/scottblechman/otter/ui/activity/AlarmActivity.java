@@ -1,6 +1,7 @@
 package com.scottblechman.otter.ui.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
+import com.scottblechman.otter.services.NotificationService;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -29,9 +31,7 @@ public class AlarmActivity extends AppCompatActivity {
 
         mAlarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
 
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        final Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
-        ringtone.play();
+
 
         TextView labelTv = findViewById(R.id.labelText);
         labelTv.setText(getIntent().getStringExtra("label"));
@@ -50,7 +50,6 @@ public class AlarmActivity extends AppCompatActivity {
                 Alarm oldAlarm = new Alarm(dateTime, getIntent().getStringExtra("label"));
                 Alarm newAlarm = createSnoozedAlarm(oldAlarm);
                 mAlarmViewModel.update(oldAlarm, newAlarm,false);
-                ringtone.stop();
                 finish();
             }
         });
@@ -59,7 +58,7 @@ public class AlarmActivity extends AppCompatActivity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ringtone.stop();
+                stopService(new Intent(getApplicationContext(), NotificationService.class));
                 finish();
             }
         });

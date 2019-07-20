@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.scottblechman.otter.ui.activity.AlarmActivity;
-import com.scottblechman.otter.ui.notification.AlarmNotification;
-
+import com.scottblechman.otter.services.NotificationService;
 import org.joda.time.DateTime;
 
 public class AlarmBroadcastReceiver extends BroadcastReceiver {
@@ -20,12 +18,10 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         String label = intent.getStringExtra("label");
         long time = intent.getLongExtra("time", new DateTime().getMillis());
 
-        AlarmNotification.notify(context, label);
-
-        Intent intent2 = new Intent(context, AlarmActivity.class);
-        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent2.putExtra("label", label);
-        intent2.putExtra("time", time);
-        context.startActivity(intent2);
+        // AlarmNotification.notify(context, intent);
+        Intent serviceIntent = new Intent(context, NotificationService.class);
+        serviceIntent.putExtra("label", label);
+        serviceIntent.putExtra("time", time);
+        context.startService(serviceIntent);
     }
 }
