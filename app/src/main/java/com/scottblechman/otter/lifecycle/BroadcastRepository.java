@@ -3,6 +3,7 @@ package com.scottblechman.otter.lifecycle;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 
 import com.scottblechman.otter.db.Alarm;
@@ -10,45 +11,64 @@ import com.scottblechman.otter.db.Alarm;
 import org.joda.time.DateTime;
 
 
+import java.io.Serializable;
+
 import static android.content.Context.ALARM_SERVICE;
 
-class BroadcastRepository {
+public class BroadcastRepository implements Serializable {
 
-    private Application mApplication;
+    private static volatile BroadcastRepository instance;
 
-    BroadcastRepository(Application application) {
-        mApplication = application;
+
+    private BroadcastRepository() {
+        if (instance != null){
+            throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
+        }
     }
 
-    void insert(Alarm alarm) {
+    public static BroadcastRepository getInstance() {
+        if (instance == null) {
+            synchronized (BroadcastRepository.class) {
+                if (instance == null) instance = new BroadcastRepository();
+            }
+        }
+
+        return instance;
+    }
+
+    protected BroadcastRepository readResolve() {
+        return getInstance();
+    }
+
+    public void insert(Application application, Alarm alarm) {
         DateTime dateTime = alarm.getDate().withSecondOfMinute(0);
 
-        Intent intent = new Intent(mApplication, AlarmBroadcastReceiver.class);
+        Intent intent = new Intent(application, AlarmBroadcastReceiver.class);
         intent.putExtra("uid", alarm.getUid());
         intent.putExtra("label", alarm.getLabel());
         intent.putExtra("time", alarm.getDate().getMillis());
-        PendingIntent sender = PendingIntent.getBroadcast(mApplication, alarm.getUid(), intent,
+        PendingIntent sender = PendingIntent.getBroadcast(application, alarm.getUid(), intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         // Get the AlarmManager service
-        AlarmManager am = (AlarmManager) mApplication.getSystemService(ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) application.getSystemService(ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, dateTime.getMillis(), sender);
     }
 
-    void delete(Alarm alarm) {
-        Intent intent = new Intent(mApplication, AlarmBroadcastReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(mApplication, alarm.hashCode(), intent,
+    public void delete(Application application, Alarm alarm) {
+        Intent intent = new Intent(application, AlarmBroadcastReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(application, alarm.hashCode(), intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         // Get the AlarmManager service
-        AlarmManager am = (AlarmManager) mApplication.getSystemService(ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) application.getSystemService(ALARM_SERVICE);
         am.cancel(sender);
     }
 
-    void update(Alarm oldAlarm, Alarm newAlarm) {
-        delete(oldAlarm);
+    public void update(Application application, Alarm oldAlarm, Alarm newAlarm) {
+        delete(application, oldAlarm);
         if(newAlarm.getEnabled()) {
-            insert(newAlarm);
+            insert(application, newAlarm);
         }
     }
 }

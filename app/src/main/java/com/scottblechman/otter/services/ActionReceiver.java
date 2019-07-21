@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.scottblechman.otter.Otter;
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
+import com.scottblechman.otter.lifecycle.BroadcastRepository;
 
 import org.joda.time.DateTime;
 
@@ -47,7 +49,8 @@ public class ActionReceiver extends BroadcastReceiver {
         Toast.makeText(context, R.string.alarm_snoozed, Toast.LENGTH_SHORT).show();
         Alarm oldAlarm = new Alarm(mDateTime, mLabel);
         Alarm newAlarm = createSnoozedAlarm(context, oldAlarm);
-        // TODO: update broadcast repository
+        BroadcastRepository broadcastRepository = BroadcastRepository.getInstance();
+        broadcastRepository.update((Otter)context.getApplicationContext(), oldAlarm, newAlarm);
     }
 
     public void dismissAlarm(Context context){

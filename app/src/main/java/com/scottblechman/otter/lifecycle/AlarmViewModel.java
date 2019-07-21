@@ -22,7 +22,7 @@ public class AlarmViewModel extends AndroidViewModel {
     public AlarmViewModel(@NonNull Application application) {
         super(application);
         mRepository = new AlarmRepository(application);
-        mBroadcastRepository = new BroadcastRepository(application);
+        mBroadcastRepository = BroadcastRepository.getInstance();
         mAllAlarms = mRepository.getAllAlarms();
     }
 
@@ -30,7 +30,7 @@ public class AlarmViewModel extends AndroidViewModel {
 
     public void insert(Alarm alarm) {
         mRepository.insert(alarm);
-        mBroadcastRepository.insert(alarm);
+        mBroadcastRepository.insert(getApplication(), alarm);
     }
 
     /**
@@ -43,12 +43,12 @@ public class AlarmViewModel extends AndroidViewModel {
         if(updateDb) {
             mRepository.update(newAlarm);
         }
-        mBroadcastRepository.update(oldAlarm, newAlarm);
+        mBroadcastRepository.update(getApplication(), oldAlarm, newAlarm);
     }
 
     public void delete(Alarm alarm) {
         mRepository.delete(alarm);
-        mBroadcastRepository.delete(alarm);
+        mBroadcastRepository.delete(getApplication(), alarm);
     }
 
     /**
