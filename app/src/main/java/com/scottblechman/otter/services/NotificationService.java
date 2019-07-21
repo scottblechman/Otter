@@ -61,7 +61,6 @@ public class NotificationService extends Service {
     public void onDestroy() {
         notificationManager.cancel(R.string.notificationId);
         ringtone.stop();
-        Toast.makeText(this, R.string.notification_service_stopped, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -77,6 +76,13 @@ public class NotificationService extends Service {
                 createActivityIntent(this, intent), PendingIntent.FLAG_UPDATE_CURRENT);
 
 
+        // Add actions for snooze and dismiss
+        Intent snoozeIntent = new Intent(this, ActionReceiver.class);
+        snoozeIntent.putExtra("action","snooze");
+
+        Intent dismissIntent = new Intent(this, ActionReceiver.class);
+        dismissIntent.putExtra("action","dismiss");
+
         final String label = intent.getStringExtra("label");
         DateTimeFormatter fmt = DateTimeFormat.forPattern(getString(R.string.dateTimeFormat));
         DateTime now = DateTime.now();
@@ -84,18 +90,24 @@ public class NotificationService extends Service {
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this,
                 NotificationCompat.CATEGORY_ALARM)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)  // TODO: replace with icon
-                .setTicker(label)
-                .setShowWhen(false)
                 .setChannelId(NotificationCompat.CATEGORY_ALARM)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setDefaults(NotificationCompat.DEFAULT_VIBRATE | NotificationCompat.DEFAULT_LIGHTS)
-                .setAutoCancel(false)
-                .setOngoing(true)
+
+                .setSmallIcon(R.drawable.ic_launcher_foreground)  // TODO: replace with icon
+                .setTicker(label)
                 .setContentTitle(label)
                 .setContentText(time)
-                .setContentIntent(contentIntent);
-                //.build();
+
+                .setShowWhen(false)
+                .setAutoCancel(false)
+                .setOngoing(true)
+
+                .setContentIntent(contentIntent)
+                .addAction(R.drawable.ic_stat_snooze, "Snooze", PendingIntent.getBroadcast(
+                        this, 0, snoozeIntent, PendingIntent.FLAG_CANCEL_CURRENT))
+                .addAction(R.drawable.ic_stat_dismiss, "Dismiss", PendingIntent.getBroadcast(
+                        this, 1, dismissIntent, PendingIntent.FLAG_CANCEL_CURRENT));
 
         notificationManager.notify(R.string.notificationId, notification.build());
     }

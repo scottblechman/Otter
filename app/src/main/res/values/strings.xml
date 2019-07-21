@@ -27,4 +27,5 @@
     <string name="notificationId">NotificationService</string>
     <string name="notification_service_stopped">Alarm dismissed.</string>
     <string name="dateTimeFormat">EEEE, MMMM d y, h:mm a</string>
+    <string name="alarm_snoozed">Snoozed alarm</string>
 </resources>
