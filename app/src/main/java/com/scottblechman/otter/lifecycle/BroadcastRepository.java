@@ -3,7 +3,6 @@ package com.scottblechman.otter.lifecycle;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 
 import com.scottblechman.otter.db.Alarm;
@@ -15,6 +14,7 @@ import java.io.Serializable;
 
 import static android.content.Context.ALARM_SERVICE;
 
+@SuppressWarnings("WeakerAccess")
 public class BroadcastRepository implements Serializable {
 
     private static volatile BroadcastRepository instance;
@@ -36,6 +36,7 @@ public class BroadcastRepository implements Serializable {
         return instance;
     }
 
+    @SuppressWarnings("unused")
     protected BroadcastRepository readResolve() {
         return getInstance();
     }

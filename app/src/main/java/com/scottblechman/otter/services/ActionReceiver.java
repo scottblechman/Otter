@@ -1,7 +1,5 @@
 package com.scottblechman.otter.services;
 
-import android.app.NotificationManager;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +8,9 @@ import android.widget.Toast;
 import com.scottblechman.otter.Otter;
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.db.Alarm;
-import com.scottblechman.otter.lifecycle.AlarmViewModel;
 import com.scottblechman.otter.lifecycle.BroadcastRepository;
 
 import org.joda.time.DateTime;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Responds to actions selected from the notification.
