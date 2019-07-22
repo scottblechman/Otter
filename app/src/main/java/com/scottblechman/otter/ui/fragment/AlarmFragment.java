@@ -83,7 +83,7 @@ public class AlarmFragment extends Fragment {
             }
             recyclerView.setAdapter(new AlarmRecyclerViewAdapter(mListener, this));
 
-            mAlarmViewModel.getAllWords().observe(this, new Observer<List<Alarm>>() {
+            mAlarmViewModel.getAllAlarms().observe(this, new Observer<List<Alarm>>() {
                 @Override
                 public void onChanged(@Nullable final List<Alarm> alarms) {
                     // Update the cached copy of the words in the adapter.
