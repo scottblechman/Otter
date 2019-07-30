@@ -1,9 +1,9 @@
 package com.scottblechman.otter.lifecycle;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.annotation.NonNull;
 
 import com.scottblechman.otter.db.Alarm;
 
@@ -21,12 +21,13 @@ public class AlarmViewModel extends AndroidViewModel {
 
     public AlarmViewModel(@NonNull Application application) {
         super(application);
-        mRepository = new AlarmRepository(application);
+        mRepository = AlarmRepository.getInstance();
+        mRepository.initializeDataAccess(application);
         mBroadcastRepository = BroadcastRepository.getInstance();
         mAllAlarms = mRepository.getAllAlarms();
     }
 
-    public LiveData<List<Alarm>> getAllWords() { return mAllAlarms; }
+    public LiveData<List<Alarm>> getAllAlarms() { return mAllAlarms; }
 
     public void insert(Alarm alarm) {
         mRepository.insert(alarm);

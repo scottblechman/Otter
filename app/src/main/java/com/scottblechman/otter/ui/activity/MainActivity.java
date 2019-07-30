@@ -1,15 +1,15 @@
 package com.scottblechman.otter.ui.activity;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
 import com.scottblechman.otter.db.Alarm;

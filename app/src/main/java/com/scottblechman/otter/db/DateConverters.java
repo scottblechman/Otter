@@ -1,6 +1,6 @@
 package com.scottblechman.otter.db;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import org.joda.time.DateTime;
 
