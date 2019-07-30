@@ -67,6 +67,8 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
 
         holder.mLabelView.setText(mValues.get(position).getLabel());
 
+        holder.mToggleSwitch.setChecked(mValues.get(position).getEnabled());
+
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
