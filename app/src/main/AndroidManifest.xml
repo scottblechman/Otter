@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.scottblechman.otter">
 
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -39,9 +40,9 @@
         <receiver
             android:name=".services.ActionReceiver"
             android:process=":remote" />
-        <receiver android:name=".lifecycle.OnBootReceiver">
+        <receiver android:name=".lifecycle.boot.OnBootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.AIRPLANE_MODE" />
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
