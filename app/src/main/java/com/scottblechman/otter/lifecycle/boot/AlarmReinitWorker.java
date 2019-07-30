@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.scottblechman.otter.Otter;
 import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.db.AlarmDatabase;
+import com.scottblechman.otter.lifecycle.BroadcastRepository;
 
 import org.joda.time.DateTime;
 
@@ -53,7 +55,7 @@ public class AlarmReinitWorker extends Worker {
         Log.d(TAG, "reinitialize: alarm is after current time: " + alarm.getDate().isAfter(now.toInstant().getMillis()));
         if(alarm.getEnabled() && alarm.getDate().isAfter(now.toInstant().getMillis())) {
             Log.d(TAG, "reinitialize: adding alarm "+alarm.getLabel());
-            AlarmDatabase.getDatabase(context).alarmDao().insert(alarm);
+            BroadcastRepository.getInstance().insert((Otter) context, alarm);
         }
     }
 }
