@@ -58,7 +58,10 @@ public class BroadcastRepository implements Serializable {
 
     public void delete(Application application, Alarm alarm) {
         Intent intent = new Intent(application, AlarmBroadcastReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(application, alarm.hashCode(), intent,
+        intent.putExtra("uid", alarm.getUid());
+        intent.putExtra("label", alarm.getLabel());
+        intent.putExtra("time", alarm.getDate().getMillis());
+        PendingIntent sender = PendingIntent.getBroadcast(application, alarm.getUid(), intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         // Get the AlarmManager service

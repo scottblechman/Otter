@@ -14,6 +14,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class AlarmViewModel extends AndroidViewModel {
 
+    private Application application;
     private AlarmRepository mRepository;
     private BroadcastRepository mBroadcastRepository;
 
@@ -21,8 +22,9 @@ public class AlarmViewModel extends AndroidViewModel {
 
     public AlarmViewModel(@NonNull Application application) {
         super(application);
+        this.application = application;
         mRepository = AlarmRepository.getInstance();
-        mRepository.initializeDataAccess(application);
+        mRepository.initializeDataAccess(this.application);
         mBroadcastRepository = BroadcastRepository.getInstance();
         mAllAlarms = mRepository.getAllAlarms();
     }
@@ -31,7 +33,7 @@ public class AlarmViewModel extends AndroidViewModel {
 
     public void insert(Alarm alarm) {
         mRepository.insert(alarm);
-        mBroadcastRepository.insert(getApplication(), alarm);
+        mBroadcastRepository.insert(application, alarm);
     }
 
     /**
@@ -44,12 +46,12 @@ public class AlarmViewModel extends AndroidViewModel {
         if(updateDb) {
             mRepository.update(newAlarm);
         }
-        mBroadcastRepository.update(getApplication(), oldAlarm, newAlarm);
+        mBroadcastRepository.update(application, oldAlarm, newAlarm);
     }
 
     public void delete(Alarm alarm) {
         mRepository.delete(alarm);
-        mBroadcastRepository.delete(getApplication(), alarm);
+        mBroadcastRepository.delete(application, alarm);
     }
 
     /**

@@ -1,9 +1,11 @@
 package com.scottblechman.otter.ui.fragment.adapter;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.scottblechman.otter.lifecycle.AlarmViewModel;
 import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.ui.fragment.AlarmFragment;
 import com.scottblechman.otter.ui.fragment.AlarmFragment.OnListFragmentInteractionListener;
+import com.scottblechman.otter.ui.fragment.DatePickerFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -79,6 +82,37 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
                 }
             }
         });
+
+        holder.mDateView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Alarm alarm = new Alarm();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("alarm", alarm);
+
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.setArguments(bundle);
+                assert mFragment.getFragmentManager() != null;
+                newFragment.show(mFragment.getFragmentManager(), "datePicker");
+            }
+        });
+
+        holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlarmViewModel.delete(holder.mItem);
+                Toast.makeText(v.getContext(),"Delete item " + holder.mItem.getLabel(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.mToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Alarm oldAlarm = holder.mItem;
+                holder.mItem.setEnabled(isChecked);
+                mAlarmViewModel.update(oldAlarm, holder.mItem, true);
+            }
+        });
     }
 
     public void setAlarms(List<Alarm> alarms){
@@ -113,23 +147,6 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
             mLabelView = view.findViewById(R.id.label);
             mDeleteButton = view.findViewById(R.id.buttonDelete);
             mToggleSwitch = view.findViewById(R.id.toggle);
-
-            mDeleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mAlarmViewModel.delete(mItem);
-                    Toast.makeText(v.getContext(),"Delete item " + mItem.getLabel(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            mToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Alarm oldAlarm = mItem;
-                    mItem.setEnabled(isChecked);
-                    mAlarmViewModel.update(oldAlarm, mItem, true);
-                }
-            });
         }
 
         @NonNull

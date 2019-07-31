@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
                 Alarm alarm = new Alarm();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("alarm", alarm);
+                bundle.putBoolean("newAlarm", true);
 
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.setArguments(bundle);
@@ -76,32 +77,44 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTimeSet(Alarm alarm) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("alarm", alarm);
+    public void onTimeSet(Alarm alarm, boolean newAlarm) {
+        if(newAlarm) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("alarm", alarm);
+            bundle.putBoolean("newAlarm", true);
 
-        DialogFragment newFragment;
-        if(mAlarmViewModel.isAlarmValid(alarm, DateTime.now())) {
-            newFragment = new LabelFragment();
-        } else {
-            newFragment = new TimePickerFragment();
+            DialogFragment newFragment;
+            if (mAlarmViewModel.isAlarmValid(alarm, DateTime.now())) {
+                newFragment = new LabelFragment();
+            } else {
+                newFragment = new TimePickerFragment();
+            }
+            newFragment.setArguments(bundle);
+            newFragment.show(getSupportFragmentManager(), "label");
         }
-        newFragment.setArguments(bundle);
-        newFragment.show(getSupportFragmentManager(), "label");
     }
 
     @Override
-    public void onDateSet(Alarm alarm) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("alarm", alarm);
+    public void onDateSet(Alarm alarm, boolean newAlarm) {
+        if(newAlarm) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("alarm", alarm);
+            bundle.putBoolean("newAlarm", true);
 
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.setArguments(bundle);
-        newFragment.show(getSupportFragmentManager(), "timePicker");
+            DialogFragment newFragment = new TimePickerFragment();
+            newFragment.setArguments(bundle);
+            newFragment.show(getSupportFragmentManager(), "timePicker");
+        } else {
+            // TODO: 2019-07-31 update 
+        }
     }
 
     @Override
-    public void onLabelCreated(Alarm alarm) {
-        mAlarmViewModel.insert(alarm);
+    public void onLabelCreated(Alarm alarm, boolean newAlarm) {
+        if(newAlarm) {
+            mAlarmViewModel.insert(alarm);
+        } else {
+            // TODO: 2019-07-31 update 
+        }
     }
 }
