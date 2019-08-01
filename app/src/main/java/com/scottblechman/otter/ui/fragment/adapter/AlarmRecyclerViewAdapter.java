@@ -21,6 +21,10 @@ import com.scottblechman.otter.db.Alarm;
 import com.scottblechman.otter.ui.fragment.AlarmFragment;
 import com.scottblechman.otter.ui.fragment.AlarmFragment.OnListFragmentInteractionListener;
 import com.scottblechman.otter.ui.fragment.DatePickerFragment;
+import com.scottblechman.otter.ui.fragment.LabelFragment;
+import com.scottblechman.otter.ui.fragment.TimePickerFragment;
+
+import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -53,7 +57,7 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
 
         String timeFormat = "hh:mm";
@@ -86,14 +90,47 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
         holder.mDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Alarm alarm = new Alarm();
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("alarm", alarm);
+                bundle.putParcelable("alarm", mValues.get(position));
+                bundle.putBoolean("newAlarm", false);
 
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.setArguments(bundle);
                 assert mFragment.getFragmentManager() != null;
                 newFragment.show(mFragment.getFragmentManager(), "datePicker");
+            }
+        });
+
+        holder.mTimeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("alarm", mValues.get(position));
+                bundle.putBoolean("newAlarm", false);
+
+                DialogFragment newFragment = new TimePickerFragment();
+                newFragment.setArguments(bundle);
+                assert mFragment.getFragmentManager() != null;
+                newFragment.show(mFragment.getFragmentManager(), "timePicker");
+            }
+        });
+
+        holder.mLabelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("alarm", mValues.get(position));
+                bundle.putBoolean("newAlarm", false);
+
+                DialogFragment newFragment;
+                if (mAlarmViewModel.isAlarmValid(mValues.get(position), DateTime.now())) {
+                    newFragment = new LabelFragment();
+                } else {
+                    newFragment = new TimePickerFragment();
+                }
+                newFragment.setArguments(bundle);
+                assert mFragment.getFragmentManager() != null;
+                newFragment.show(mFragment.getFragmentManager(), "label");
             }
         });
 

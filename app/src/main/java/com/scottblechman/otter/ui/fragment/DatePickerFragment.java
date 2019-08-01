@@ -21,6 +21,7 @@ public class DatePickerFragment extends DialogFragment
 
     private FormsInterface mCallback;
 
+    private Alarm mOriginalAlarm;
     private Alarm mAlarm;
 
     private boolean mIsNewAlarm;
@@ -30,6 +31,7 @@ public class DatePickerFragment extends DialogFragment
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
         mAlarm = Objects.requireNonNull(getArguments()).getParcelable("alarm");
+        mOriginalAlarm = mAlarm;
         mIsNewAlarm = Objects.requireNonNull(getArguments()).getBoolean("newAlarm");
     }
 
@@ -57,6 +59,6 @@ public class DatePickerFragment extends DialogFragment
 
         DateTime selectedDate = new DateTime(calendar.getTimeInMillis());
         mAlarm.setDate(selectedDate);
-        mCallback.onDateSet(mAlarm, mIsNewAlarm);
+        mCallback.onDateSet(mOriginalAlarm, mAlarm, mIsNewAlarm);
     }
 }

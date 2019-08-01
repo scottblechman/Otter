@@ -26,6 +26,7 @@ public class LabelFragment extends DialogFragment {
 
     private FormsInterface mCallback;
 
+    private Alarm mOriginalAlarm;
     private Alarm mAlarm;
 
     private boolean mIsNewAlarm;
@@ -35,6 +36,7 @@ public class LabelFragment extends DialogFragment {
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
         mAlarm = Objects.requireNonNull(getArguments()).getParcelable("alarm");
+        mOriginalAlarm = mAlarm;
         mIsNewAlarm = Objects.requireNonNull(getArguments()).getBoolean("newAlarm");
 
     }
@@ -78,7 +80,7 @@ public class LabelFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 mAlarm.setLabel(userInput.getText().toString());
-                                mCallback.onLabelCreated(mAlarm, mIsNewAlarm);
+                                mCallback.onLabelCreated(mOriginalAlarm, mAlarm, mIsNewAlarm);
                             }
                         })
                 .setNegativeButton(R.string.dialogCancel,

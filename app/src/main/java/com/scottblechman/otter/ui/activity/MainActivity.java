@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTimeSet(Alarm alarm, boolean newAlarm) {
+    public void onTimeSet(Alarm originalAlarm, Alarm alarm, boolean newAlarm) {
         if(newAlarm) {
             Bundle bundle = new Bundle();
             bundle.putParcelable("alarm", alarm);
@@ -91,11 +91,13 @@ public class MainActivity extends AppCompatActivity
             }
             newFragment.setArguments(bundle);
             newFragment.show(getSupportFragmentManager(), "label");
+        } else {
+            mAlarmViewModel.update(originalAlarm, alarm, true);
         }
     }
 
     @Override
-    public void onDateSet(Alarm alarm, boolean newAlarm) {
+    public void onDateSet(Alarm originalAlarm, Alarm alarm, boolean newAlarm) {
         if(newAlarm) {
             Bundle bundle = new Bundle();
             bundle.putParcelable("alarm", alarm);
@@ -105,16 +107,16 @@ public class MainActivity extends AppCompatActivity
             newFragment.setArguments(bundle);
             newFragment.show(getSupportFragmentManager(), "timePicker");
         } else {
-            // TODO: 2019-07-31 update 
+            mAlarmViewModel.update(originalAlarm, alarm, true);
         }
     }
 
     @Override
-    public void onLabelCreated(Alarm alarm, boolean newAlarm) {
+    public void onLabelCreated(Alarm originalAlarm, Alarm alarm, boolean newAlarm) {
         if(newAlarm) {
             mAlarmViewModel.insert(alarm);
         } else {
-            // TODO: 2019-07-31 update 
+            mAlarmViewModel.update(originalAlarm, alarm, true);
         }
     }
 }

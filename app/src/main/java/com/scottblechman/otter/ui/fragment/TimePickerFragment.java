@@ -21,6 +21,7 @@ public class TimePickerFragment extends DialogFragment
 
     private FormsInterface mCallback;
 
+    private Alarm mOriginalAlarm;
     private Alarm mAlarm;
 
     private boolean mIsNewAlarm;
@@ -30,6 +31,7 @@ public class TimePickerFragment extends DialogFragment
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
         mAlarm = Objects.requireNonNull(getArguments()).getParcelable("alarm");
+        mOriginalAlarm = mAlarm;
         mIsNewAlarm = Objects.requireNonNull(getArguments()).getBoolean("newAlarm");
 
     }
@@ -56,6 +58,6 @@ public class TimePickerFragment extends DialogFragment
                 .withSecondOfMinute(0);
 
         mAlarm.setDate(selectedTime);
-        mCallback.onTimeSet(mAlarm, mIsNewAlarm);
+        mCallback.onTimeSet(mOriginalAlarm, mAlarm, mIsNewAlarm);
     }
 }

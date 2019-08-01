@@ -12,17 +12,17 @@ public interface FormsInterface {
      * Called when {@link com.scottblechman.otter.ui.fragment.TimePickerFragment}
      * returns a time.
      */
-    void onTimeSet(Alarm alarm, boolean newAlarm);
+    void onTimeSet(Alarm oldAlarm, Alarm alarm, boolean newAlarm);
 
     /**
      * Called when {@link com.scottblechman.otter.ui.fragment.DatePickerFragment}
      * returns a date.
      */
-    void onDateSet(Alarm alarm, boolean newAlarm);
+    void onDateSet(Alarm oldAlarm, Alarm alarm, boolean newAlarm);
 
     /**
      * Called when {@link com.scottblechman.otter.ui.fragment.LabelFragment}
      * returns a label.
      */
-    void onLabelCreated(Alarm alarm, boolean newAlarm);
+    void onLabelCreated(Alarm oldAlarm, Alarm alarm, boolean newAlarm);
 }
