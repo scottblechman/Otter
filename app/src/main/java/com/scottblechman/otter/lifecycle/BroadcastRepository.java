@@ -49,7 +49,7 @@ public class BroadcastRepository implements Serializable {
         intent.putExtra("label", alarm.getLabel());
         intent.putExtra("time", alarm.getDate().getMillis());
         PendingIntent sender = PendingIntent.getBroadcast(application, alarm.getUid(), intent,
-                PendingIntent.FLAG_ONE_SHOT);
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get the AlarmManager service
         AlarmManager am = (AlarmManager) application.getSystemService(ALARM_SERVICE);
@@ -62,7 +62,7 @@ public class BroadcastRepository implements Serializable {
         intent.putExtra("label", alarm.getLabel());
         intent.putExtra("time", alarm.getDate().getMillis());
         PendingIntent sender = PendingIntent.getBroadcast(application, alarm.getUid(), intent,
-                PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get the AlarmManager service
         AlarmManager am = (AlarmManager) application.getSystemService(ALARM_SERVICE);
