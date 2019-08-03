@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity(tableName = "alarms")
 public class Alarm implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "id")
     private int mUid;
 
@@ -33,12 +33,14 @@ public class Alarm implements Parcelable {
     // Default constructor, used when new Alarm object created
     @Ignore
     public Alarm() {
+        mUid = DateTime.now().hashCode();
         mDate = new DateTime();
         mLabel = "";
         mEnabled = true;
     }
 
     public Alarm(@NonNull DateTime date, String label) {
+        mUid = DateTime.now().hashCode();
         this.mDate = date;
         this.mLabel = label;
         this.mEnabled = true;

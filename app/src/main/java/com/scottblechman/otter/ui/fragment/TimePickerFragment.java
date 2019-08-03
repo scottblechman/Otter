@@ -40,7 +40,7 @@ public class TimePickerFragment extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
-        final DateTime now = new DateTime();
+        final DateTime now = new DateTime().plusMinutes(1);
 
         // Create a new instance of TimePickerDialog and return it
         return new TimePickerDialog(getActivity(), this, now.getHourOfDay(), now.getMinuteOfHour(),
