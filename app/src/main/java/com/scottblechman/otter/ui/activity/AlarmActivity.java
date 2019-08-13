@@ -2,7 +2,11 @@ package com.scottblechman.otter.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +49,7 @@ public class AlarmActivity extends AppCompatActivity {
                 Alarm oldAlarm = new Alarm(dateTime, getIntent().getStringExtra("label"));
                 Alarm newAlarm = createSnoozedAlarm(oldAlarm);
                 mAlarmViewModel.update(oldAlarm, newAlarm,false);
+                stopService(new Intent(getApplicationContext(), NotificationService.class));
                 finish();
             }
         });
@@ -53,10 +58,33 @@ public class AlarmActivity extends AppCompatActivity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Alarm alarm = new Alarm(dateTime, getIntent().getStringExtra("label"));
+                alarm.setUid(getIntent().getIntExtra("uid", -1));
+                alarm.setEnabled(getIntent().getBooleanExtra("enabled", false));
+
+                Alarm newAlarm = alarm;
+                newAlarm.setEnabled(false);
+
+                mAlarmViewModel.update(alarm, newAlarm, true);
                 stopService(new Intent(getApplicationContext(), NotificationService.class));
                 finish();
             }
         });
+
+        // Listen for dismiss action in notification
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                finish();
+
+            }
+        };
+
+        IntentFilter filter = new IntentFilter();
+
+        filter.addAction(AlarmActivity.class.toString());
+        registerReceiver(receiver, filter);
     }
 
     /**

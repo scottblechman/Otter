@@ -10,7 +10,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -125,7 +124,6 @@ public class NotificationService extends Service {
     }
 
     private Intent createActivityIntent(Context context, Intent intent) {
-        Log.d(NotificationService.class.toString(), "createActivityIntent: creating activity intent with extras " + intent.getExtras().toString());
         String label = intent.getStringExtra("label");
         long time = intent.getLongExtra("time", new DateTime().getMillis());
         int id = intent.getIntExtra("uid", -1);

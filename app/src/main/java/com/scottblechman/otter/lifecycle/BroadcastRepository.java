@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.util.Log;
 
 import com.scottblechman.otter.db.Alarm;
 
@@ -73,7 +72,6 @@ public class BroadcastRepository implements Serializable {
     }
 
     public void update(Application application, Alarm oldAlarm, Alarm newAlarm) {
-        Log.d(BroadcastRepository.class.toString(), "update: " + oldAlarm.toString() + newAlarm.toString());
         delete(application, oldAlarm);
         if(newAlarm.getEnabled()) {
             insert(application, newAlarm);
