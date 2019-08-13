@@ -10,6 +10,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
+
 import androidx.core.app.NotificationCompat;
 
 import com.scottblechman.otter.R;
@@ -74,15 +76,26 @@ public class NotificationService extends Service {
                 intent.getIntExtra("uid", 0),
                 createActivityIntent(this, intent), PendingIntent.FLAG_UPDATE_CURRENT);
 
+        final String label = intent.getStringExtra("label");
+        long dateTime = intent.getLongExtra("time", new DateTime().getMillis());
+        int id = intent.getIntExtra("uid", -1);
+        boolean enabled = intent.getBooleanExtra("enabled", false);
 
         // Add actions for snooze and dismiss
         Intent snoozeIntent = new Intent(this, ActionReceiver.class);
         snoozeIntent.putExtra("action","snooze");
+        snoozeIntent.putExtra("uid", id);
+        snoozeIntent.putExtra("label", label);
+        snoozeIntent.putExtra("time", dateTime);
+        snoozeIntent.putExtra("enabled", enabled);
 
         Intent dismissIntent = new Intent(this, ActionReceiver.class);
         dismissIntent.putExtra("action","dismiss");
+        dismissIntent.putExtra("uid", id);
+        dismissIntent.putExtra("label", label);
+        dismissIntent.putExtra("time", dateTime);
+        dismissIntent.putExtra("enabled", enabled);
 
-        final String label = intent.getStringExtra("label");
         DateTimeFormatter fmt = DateTimeFormat.forPattern(getString(R.string.dateTimeFormat));
         DateTime now = DateTime.now();
         final String time = now.toString(fmt);
@@ -93,7 +106,7 @@ public class NotificationService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setDefaults(NotificationCompat.DEFAULT_VIBRATE | NotificationCompat.DEFAULT_LIGHTS)
 
-                .setSmallIcon(R.drawable.ic_launcher_foreground)  // TODO: replace with icon
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setTicker(label)
                 .setContentTitle(label)
                 .setContentText(time)
@@ -112,13 +125,18 @@ public class NotificationService extends Service {
     }
 
     private Intent createActivityIntent(Context context, Intent intent) {
+        Log.d(NotificationService.class.toString(), "createActivityIntent: creating activity intent with extras " + intent.getExtras().toString());
         String label = intent.getStringExtra("label");
         long time = intent.getLongExtra("time", new DateTime().getMillis());
+        int id = intent.getIntExtra("uid", -1);
+        boolean enabled = intent.getBooleanExtra("enabled", false);
 
         Intent activityIntent = new Intent(context, AlarmActivity.class);
         activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activityIntent.putExtra("uid", id);
         activityIntent.putExtra("label", label);
         activityIntent.putExtra("time", time);
+        activityIntent.putExtra("enabled", enabled);
 
         return activityIntent;
     }

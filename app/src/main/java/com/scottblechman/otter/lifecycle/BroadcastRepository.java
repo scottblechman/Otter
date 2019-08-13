@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.util.Log;
 
 import com.scottblechman.otter.db.Alarm;
 
@@ -48,6 +49,7 @@ public class BroadcastRepository implements Serializable {
         intent.putExtra("uid", alarm.getUid());
         intent.putExtra("label", alarm.getLabel());
         intent.putExtra("time", alarm.getDate().getMillis());
+        intent.putExtra("enabled", alarm.getEnabled());
         PendingIntent sender = PendingIntent.getBroadcast(application, alarm.getUid(), intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -61,6 +63,7 @@ public class BroadcastRepository implements Serializable {
         intent.putExtra("uid", alarm.getUid());
         intent.putExtra("label", alarm.getLabel());
         intent.putExtra("time", alarm.getDate().getMillis());
+        intent.putExtra("enabled", alarm.getEnabled());
         PendingIntent sender = PendingIntent.getBroadcast(application, alarm.getUid(), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -70,6 +73,7 @@ public class BroadcastRepository implements Serializable {
     }
 
     public void update(Application application, Alarm oldAlarm, Alarm newAlarm) {
+        Log.d(BroadcastRepository.class.toString(), "update: " + oldAlarm.toString() + newAlarm.toString());
         delete(application, oldAlarm);
         if(newAlarm.getEnabled()) {
             insert(application, newAlarm);
