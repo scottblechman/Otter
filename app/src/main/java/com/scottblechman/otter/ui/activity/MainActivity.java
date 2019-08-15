@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
 import com.scottblechman.otter.db.Alarm;
@@ -20,6 +21,8 @@ import com.scottblechman.otter.ui.fragment.LabelFragment;
 import com.scottblechman.otter.ui.fragment.TimePickerFragment;
 
 import org.joda.time.DateTime;
+
+import static com.scottblechman.otter.ui.fragment.adapter.AlarmRecyclerViewAdapter.createAlarmSetMessage;
 
 public class MainActivity extends AppCompatActivity
         implements AlarmFragment.OnListFragmentInteractionListener, FormsInterface {
@@ -93,6 +96,8 @@ public class MainActivity extends AppCompatActivity
             newFragment.show(getSupportFragmentManager(), "label");
         } else {
             mAlarmViewModel.update(originalAlarm, alarm, true);
+
+            makeSnackbar(alarm.getDate());
         }
     }
 
@@ -108,6 +113,8 @@ public class MainActivity extends AppCompatActivity
             newFragment.show(getSupportFragmentManager(), "timePicker");
         } else {
             mAlarmViewModel.update(originalAlarm, alarm, true);
+
+            makeSnackbar(alarm.getDate());
         }
     }
 
@@ -118,5 +125,15 @@ public class MainActivity extends AppCompatActivity
         } else {
             mAlarmViewModel.update(originalAlarm, alarm, true);
         }
+
+        makeSnackbar(alarm.getDate());
+    }
+
+    private void makeSnackbar(DateTime date) {
+        String text = getResources().getString(R.string.alarm_set,
+                createAlarmSetMessage(date));
+        View view = findViewById(android.R.id.content);
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG)
+                .show();
     }
 }
