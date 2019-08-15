@@ -31,7 +31,9 @@ public class DatePickerFragment extends DialogFragment
         super.onActivityCreated(outState);
         mCallback = (FormsInterface) getActivity();
         mAlarm = Objects.requireNonNull(getArguments()).getParcelable("alarm");
+
         mOriginalAlarm = mAlarm;
+
         mIsNewAlarm = Objects.requireNonNull(getArguments()).getBoolean("newAlarm");
     }
 
@@ -55,7 +57,8 @@ public class DatePickerFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, 0, 0, 0);
+        calendar.set(year, month, day, mOriginalAlarm.getDate().getHourOfDay(),
+                mOriginalAlarm.getDate().getMinuteOfHour(), 0);
 
         DateTime selectedDate = new DateTime(calendar.getTimeInMillis());
         mAlarm.setDate(selectedDate);
