@@ -28,4 +28,7 @@
     <string name="notification_service_stopped">Alarm dismissed.</string>
     <string name="dateTimeFormat">EEEE, MMMM d y, h:mm a</string>
     <string name="alarm_snoozed">Snoozed alarm</string>
+    <string name="alarm_deleted">Deleted alarm %1$s</string>
+    <string name="undo">UNDO</string>
+    <string name="alarm_set">Alarm set for %1$s from now.</string>
 </resources>

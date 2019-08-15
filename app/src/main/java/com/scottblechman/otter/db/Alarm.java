@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 
 import java.util.Objects;
 
-@SuppressWarnings("WeakerAccess")
 @Entity(tableName = "alarms")
 public class Alarm implements Parcelable {
 

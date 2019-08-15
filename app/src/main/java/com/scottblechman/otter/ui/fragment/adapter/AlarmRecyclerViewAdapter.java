@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.scottblechman.otter.R;
 import com.scottblechman.otter.lifecycle.AlarmViewModel;
 import com.scottblechman.otter.db.Alarm;
@@ -25,6 +26,7 @@ import com.scottblechman.otter.ui.fragment.LabelFragment;
 import com.scottblechman.otter.ui.fragment.TimePickerFragment;
 
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -137,9 +139,18 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Alarm alarm = holder.mItem;
                 mAlarmViewModel.delete(holder.mItem);
-                Toast.makeText(v.getContext(),"Delete item " + holder.mItem.getLabel(),
-                        Toast.LENGTH_SHORT).show();
+
+                String text = v.getResources().getString(R.string.alarm_deleted, alarm.getLabel());
+                Snackbar.make(v, text, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlarmViewModel.insert(alarm);
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -148,8 +159,57 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
                 Alarm oldAlarm = holder.mItem;
                 holder.mItem.setEnabled(isChecked);
                 mAlarmViewModel.update(oldAlarm, holder.mItem, true);
+
+                if(isChecked) {
+                    String text = buttonView.getResources().getString(R.string.alarm_set,
+                            createAlarmSetMessage(holder.mItem.getDate()));
+                    Snackbar.make(buttonView, text, Snackbar.LENGTH_LONG)
+                            .show();
+                }
             }
         });
+    }
+
+    /**
+     * Creates a description of the date and time of an alarm for a snackbar.
+     * @param date date and time of alarm set
+     * @return human readable format
+     */
+    public static String createAlarmSetMessage(DateTime date) {
+        String msg = "";
+
+        Period difference = new Period(DateTime.now(), date);
+        if(difference.getMonths() == 0 && difference.getYears() == 0 && difference.getDays() == 0 &&
+                difference.getHours() == 0 && difference.getMinutes() == 0) {
+            return "less than 1 minute";
+        }
+
+        if (difference.getYears() > 0) {
+            msg = msg.concat(String.valueOf(difference.getYears()));
+            msg = msg.concat(difference.getYears() == 1 ? " year" : " years");
+        }
+
+        if (difference.getMonths() > 0) {
+            msg = msg.concat(", " + difference.getMonths());
+            msg = msg.concat(difference.getMonths() == 1 ? " month" : " months");
+        }
+
+        if (difference.getDays() > 0) {
+            msg = msg.concat(", " + difference.getDays());
+            msg = msg.concat(difference.getDays() == 1 ? " day" : " days");
+        }
+
+        if (difference.getHours() > 0) {
+            msg = msg.concat(", " + difference.getHours());
+            msg = msg.concat(difference.getHours() == 1 ? " hour" : " hours");
+        }
+
+        if (difference.getMinutes() > 0) {
+            msg = msg.concat(", and " + difference.getMinutes());
+            msg = msg.concat(difference.getMinutes() == 1 ? " minute" : " minutes");
+        }
+
+        return msg;
     }
 
     public void setAlarms(List<Alarm> alarms){
