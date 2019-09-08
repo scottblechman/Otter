@@ -1,7 +1,11 @@
 package com.scottblechman.otter.lifecycle;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import android.os.AsyncTask;
 
 import com.scottblechman.otter.db.Alarm;
@@ -14,7 +18,12 @@ import java.util.List;
 public class AlarmRepository {
 
     private AlarmDao mAlarmDao;
-    private LiveData<List<Alarm>> mAllAlarms;
+
+    // These are kept around to have observer cleared
+    private LiveData<List<Alarm>> mAlarmLiveData;
+    private Observer mObserver;
+
+    private MutableLiveData<List<Alarm>> mAllAlarms;
 
     private static volatile AlarmRepository instance;
 
@@ -44,11 +53,19 @@ public class AlarmRepository {
         if(mAlarmDao == null) {
             AlarmDatabase db = AlarmDatabase.getDatabase(application);
             mAlarmDao = db.alarmDao();
-            mAllAlarms = mAlarmDao.getAllAlarms();
+            mAllAlarms = new MutableLiveData<>();
+            mAlarmLiveData = mAlarmDao.getAllAlarms();
+            mObserver = new Observer<List<Alarm>>() {
+                @Override
+                public void onChanged(List<Alarm> alarms) {
+                    mAllAlarms.setValue(alarms);
+                }
+            };
+            mAlarmLiveData.observeForever(mObserver);
         }
     }
 
-    LiveData<List<Alarm>> getAllAlarms() {
+    MutableLiveData<List<Alarm>> getAllAlarms() {
         return mAllAlarms;
     }
 
@@ -62,6 +79,14 @@ public class AlarmRepository {
 
     public void update(Alarm alarm) {
         new updateAsyncTask(mAlarmDao).execute(alarm);
+    }
+
+    public void refresh() {
+        mAllAlarms.postValue(mAllAlarms.getValue());
+    }
+
+    public void clear() {
+        mAlarmLiveData.removeObserver(mObserver);
     }
 
     private static class insertAsyncTask extends AsyncTask<Alarm, Void, Void> {

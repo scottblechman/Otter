@@ -1,6 +1,9 @@
 package com.scottblechman.otter.lifecycle;
 
 import android.app.Application;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
@@ -18,7 +21,7 @@ public class AlarmViewModel extends AndroidViewModel {
     private AlarmRepository mRepository;
     private BroadcastRepository mBroadcastRepository;
 
-    private LiveData<List<Alarm>>  mAllAlarms;
+    private LiveData<List<Alarm>> mAllAlarms;
 
     public AlarmViewModel(@NonNull Application application) {
         super(application);
@@ -27,6 +30,12 @@ public class AlarmViewModel extends AndroidViewModel {
         mRepository.initializeDataAccess(this.application);
         mBroadcastRepository = BroadcastRepository.getInstance();
         mAllAlarms = mRepository.getAllAlarms();
+    }
+
+    @Override
+    public void onCleared() {
+        super.onCleared();
+        mRepository.clear();
     }
 
     public LiveData<List<Alarm>> getAllAlarms() { return mAllAlarms; }
@@ -63,5 +72,9 @@ public class AlarmViewModel extends AndroidViewModel {
      */
     public boolean isAlarmValid(Alarm alarm, DateTime now) {
         return alarm.getDate().isAfter(now.toInstant().getMillis());
+    }
+
+    public void refresh() {
+        mRepository.refresh();
     }
 }

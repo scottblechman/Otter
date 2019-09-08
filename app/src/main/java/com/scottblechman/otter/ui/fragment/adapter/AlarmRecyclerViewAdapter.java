@@ -163,8 +163,9 @@ public class AlarmRecyclerViewAdapter extends RecyclerView.Adapter<AlarmRecycler
                 if(isChecked) {
                     String text = buttonView.getResources().getString(R.string.alarm_set,
                             createAlarmSetMessage(holder.mItem.getDate()));
-                    Snackbar.make(buttonView, text, Snackbar.LENGTH_LONG)
-                            .show();
+                    /*Snackbar.make(buttonView.findViewById(android.R.id.content), text,
+                            Snackbar.LENGTH_LONG)
+                            .show();*/
                 }
             }
         });
