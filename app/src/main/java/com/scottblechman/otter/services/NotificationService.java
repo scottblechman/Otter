@@ -1,5 +1,6 @@
 package com.scottblechman.otter.services;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,6 +10,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 
@@ -87,9 +89,20 @@ public class NotificationService extends Service {
         DateTime now = DateTime.now();
         final String time = now.toString(fmt);
 
+        final String channelId = getString(R.string.notification_channel_id);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    channelId, "Otter Notification Channel", NotificationManager.IMPORTANCE_DEFAULT
+            );
+            notificationChannel.setDescription("Otter alarm activated");
+            notificationChannel.enableLights(false);
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this,
-                NotificationCompat.CATEGORY_ALARM)
-                .setChannelId(NotificationCompat.CATEGORY_ALARM)
+                channelId)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setDefaults(NotificationCompat.DEFAULT_VIBRATE | NotificationCompat.DEFAULT_LIGHTS)
 
